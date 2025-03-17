@@ -19,12 +19,14 @@ import Calendar from '../screens/User/Calendar';
 // Admin Screens
 import ManageDashboard from '../screens/Admin/ManageDashboard';
 import MainList from '../screens/Admin/MainList';
-import ManageShifts from '../screens/Admin/ManageShifts';
-import ManageUsers from '../screens/Admin/ManageUsers';
+import AddShifts from '../screens/Admin/AddShifts';
+import EditShifts from '../screens/Admin/EditShifts';
+import AddUsers from '../screens/Admin/AddUsers';
+import EditUsers from '../screens/Admin/EditUsers';
 
 // Shared  
 import Contact from '../screens/Shared/Contact';
-import Lnaguage from '../screens/Shared/Lnaguage';
+import Language from '../screens/Shared/Language';
 import Notifications from '../screens/Shared/Notifications';
 import Settings from '../screens/Shared/Settings';
 import PrivacyPolicy from '../screens/Shared/PrivacyPolicy';
@@ -53,12 +55,14 @@ const AppNavigator = () => {
       {/* Admin Screens */}
       <Stack.Screen name="ManageDashboard" component={ManageDashboard} />
       <Stack.Screen name="MainList" component={MainList} />
-      <Stack.Screen name="ManageShifts" component={ManageShifts} />
-      <Stack.Screen name="ManageUsers" component={ManageUsers} />
+      <Stack.Screen name="AddShifts" component={AddShifts} />
+      <Stack.Screen name="EditShifts" component={EditShifts} />
+      <Stack.Screen name="AddUsers" component={AddUsers} />
+      <Stack.Screen name="EditUsers" component={EditUsers} />
 
       {/* Shared Screens */}
       <Stack.Screen name="Contact" component={Contact} />
-      <Stack.Screen name="Lnaguage" component={Lnaguage} />
+      <Stack.Screen name="Language" component={Language} />
       <Stack.Screen name="LeaveRequest" component={LeaveRequest} />
       <Stack.Screen name="Notifications" component={Notifications} />
       <Stack.Screen name="Settings" component={Settings} />

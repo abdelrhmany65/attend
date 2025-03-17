@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Header from '../../components/Header';
+import DateSelector from '../../components/DateSelector';
+import CheckInButton from '../../components/CheckInButton';
+import BottomNav from '../../components/BottomNav';
 
 // دالة لحساب الأيام ابتداءً من اليوم ولمدة 7 أيام
 const getDaysFromToday = () => {
@@ -31,42 +35,13 @@ const ManageDashboard = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* Header Section */}
-      <View style={styles.header}>
-        <View style={styles.userInfo}>
-          <Text style={styles.greeting}>Hello,</Text>
-          <Text style={styles.username}>Abu Baghdadi</Text>
-        </View>
-        <TouchableOpacity>
-          <Image
-            source={{
-              uri: 'https://img.freepik.com/free-photo/happy-man-student-with-afro-hairdo-shows-white-teeth-being-good-mood-after-classes_273609-16608.jpg',
-            }}
-            style={styles.profilePic}
-          />
-        </TouchableOpacity>
-      </View>
-
-      {/* Date Selector */}
-      <View style={styles.dateContainer}>
-        {days.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[styles.dateBox, item.selected && styles.selectedDayBox]}
-          >
-            <Text style={[styles.dayText, item.selected && styles.selectedDayText]}>
-              {item.day}
-            </Text>
-            <Text style={[styles.dateNumber, item.selected && styles.selectedDayText]}>
-              {item.date}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <Header navigation={navigation} />
+      
+      {/* Date Selector Section */}
+      <DateSelector days={days} />
 
       {/* Check-in Button */}
-      <TouchableOpacity style={styles.checkinButton}>
-        <Icon name="fingerprint" size={50} color="#fff" />
-      </TouchableOpacity>
+      <CheckInButton />
 
       {/* Cards Section */}
       <View style={styles.cardContainer}>
@@ -124,29 +99,15 @@ const ManageDashboard = ({navigation}) => {
       </View>
 
       {/* Bottom Navigation */}
-      <View style={styles.bottomNav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="home" size={28} color="#007AFF" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="message" size={28} color="#666" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.menuButton}>
-          <Icon name="add-circle" size={50} color="#007AFF" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="calendar-today" size={28} color="#666" />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Icon name="person" size={28} color="#666" />
-        </TouchableOpacity>
-      </View>
+      <BottomNav 
+        navigation={navigation}
+        activeTab="Home" 
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  /* الشاشة العامة */
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',

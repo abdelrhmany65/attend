@@ -35,17 +35,53 @@ const Settings = ({ navigation }) => {
           text="Edit profile information"
           onPress={() => navigation.navigate('UserProfile')}
         />
-        <MenuItem icon="notifications" text="Notifications" status="ON" onPress={() => navigation.navigate('Notifications')}/>
-        <MenuItem icon="language" text="Language" status="English" onPress={() => navigation.navigate('Lnaguage')}/>
+        <MenuItem
+          icon="notifications"
+          text="Notifications"
+          status="ON"
+          onPress={() => navigation.navigate('Notifications')}
+        />
+        <MenuItem
+          icon="language"
+          text="Language"
+          status="English"
+          onPress={() => navigation.navigate('Language')}
+        />
+      </View>
+
+      {/* New Card for additional actions */}
+      <View style={styles.card}>
+        <MenuItem
+          icon="person-add"
+          text="Add User"
+          onPress={() => navigation.navigate('AddUsers')}
+        />
+        <MenuItem
+          icon="event"
+          text="Add Shift"
+          onPress={() => navigation.navigate('AddShifts')}
+        />
       </View>
 
       <View style={styles.card}>
-        <MenuItem icon="security" text="Change Password" onPress={() => navigation.navigate('ChangePassword')}/>
-        <MenuItem icon="event" text="Leave Request" onPress={() => navigation.navigate('LeaveRequest')} />
+        <MenuItem
+          icon="security"
+          text="Change Password"
+          onPress={() => navigation.navigate('ChangePassword')}
+        />
+        <MenuItem
+          icon="event"
+          text="Leave Request"
+          onPress={() => navigation.navigate('LeaveRequest')}
+        />
       </View>
 
       <View style={styles.card}>
-        <MenuItem icon="contact-mail" text="Contact us" onPress={() => navigation.navigate('Contact')}/>
+        <MenuItem
+          icon="contact-mail"
+          text="Contact us"
+          onPress={() => navigation.navigate('Contact')}
+        />
         <MenuItem icon="privacy-tip" text="Privacy policy" />
       </View>
 
@@ -69,10 +105,11 @@ const MenuItem = ({ icon, text, onPress, status }) => (
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 20,
+    paddingTop: 40,
+    paddingBottom: 30,
     backgroundColor: '#F8F8F8',
-    justifyContent: 'center', 
-    alignItems: 'center',     
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   headerSection: {
     alignItems: 'center',
@@ -101,7 +138,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   card: {
-    width: '100%', 
+    width: '100%',
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 15,
@@ -116,8 +153,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 12,
-    borderBottomWidth: 1,
     borderBottomColor: '#eee',
+    borderBottomWidth: 1,
   },
   menuText: {
     flex: 1,
@@ -134,7 +171,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-
     paddingVertical: 15,
   },
   logoutText: {

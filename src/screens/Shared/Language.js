@@ -1,8 +1,8 @@
-// src/screens/Lnaguage.js
+
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
-const Lnaguage = () => {
+const Language = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('English (US)');
   const languages = [
     'Arabic',
@@ -12,7 +12,6 @@ const Lnaguage = () => {
     'Hindi',
     'Spanish',
     'French',
-    'Arabic',
     'Russian',
     'Indonesian',
     'Vietnamese'
@@ -49,4 +48,4 @@ const styles = StyleSheet.create({
   checkMark: { fontSize: 18, color: '#007AFF' },
 });
 
-export default Lnaguage;
+export default Language;

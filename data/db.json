@@ -2,62 +2,62 @@
   "users": [
     {
       "id": 1,
-      "name": "أحمد",
+      "name": "Ahmed",
       "role": "admin",
-      "department": "بائع",
+      "department": "Seller",
       "shiftStart": "09:00 AM",
       "shiftEnd": "05:00 PM",
-      "status": "حاضر",
+      "status": "Present",
       "profilePic": "https://example.com/images/ahmed.jpg"
     },
     {
       "id": 2,
-      "name": "سارة",
+      "name": "Sara",
       "role": "admin",
-      "department": "تاجر",
+      "department": "Merchant",
       "shiftStart": "08:30 AM",
       "shiftEnd": "04:30 PM",
-      "status": "حاضر",
+      "status": "Present",
       "profilePic": "https://example.com/images/sara.jpg"
     },
     {
       "id": 3,
-      "name": "محمد",
+      "name": "Mohamed",
       "role": "user",
-      "department": "بائع",
+      "department": "Seller",
       "shiftStart": "09:00 AM",
       "shiftEnd": "05:00 PM",
-      "status": "غائب",
+      "status": "Absent",
       "profilePic": "https://example.com/images/mohamed.jpg"
     },
     {
       "id": 4,
-      "name": "خالد",
+      "name": "Khaled",
       "role": "user",
-      "department": "تاجر",
+      "department": "Merchant",
       "shiftStart": "08:30 AM",
       "shiftEnd": "04:30 PM",
-      "status": "حاضر",
+      "status": "Present",
       "profilePic": "https://example.com/images/khaled.jpg"
     },
     {
       "id": 5,
-      "name": "علي",
+      "name": "Ali",
       "role": "user",
-      "department": "بائع",
+      "department": "Seller",
       "shiftStart": "09:00 AM",
       "shiftEnd": "05:00 PM",
-      "status": "غائب",
+      "status": "Absent",
       "profilePic": "https://example.com/images/ali.jpg"
     },
     {
       "id": 6,
-      "name": "محمود",
+      "name": "Mahmoud",
       "role": "user",
-      "department": "تاجر",
+      "department": "Merchant",
       "shiftStart": "08:30 AM",
       "shiftEnd": "04:30 PM",
-      "status": "حاضر",
+      "status": "Present",
       "profilePic": "https://example.com/images/mahmoud.jpg"
     }
   ]
