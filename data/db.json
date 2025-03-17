@@ -1,0 +1,64 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "أحمد",
+      "role": "admin",
+      "department": "بائع",
+      "shiftStart": "09:00 AM",
+      "shiftEnd": "05:00 PM",
+      "status": "حاضر",
+      "profilePic": "https://example.com/images/ahmed.jpg"
+    },
+    {
+      "id": 2,
+      "name": "سارة",
+      "role": "admin",
+      "department": "تاجر",
+      "shiftStart": "08:30 AM",
+      "shiftEnd": "04:30 PM",
+      "status": "حاضر",
+      "profilePic": "https://example.com/images/sara.jpg"
+    },
+    {
+      "id": 3,
+      "name": "محمد",
+      "role": "user",
+      "department": "بائع",
+      "shiftStart": "09:00 AM",
+      "shiftEnd": "05:00 PM",
+      "status": "غائب",
+      "profilePic": "https://example.com/images/mohamed.jpg"
+    },
+    {
+      "id": 4,
+      "name": "خالد",
+      "role": "user",
+      "department": "تاجر",
+      "shiftStart": "08:30 AM",
+      "shiftEnd": "04:30 PM",
+      "status": "حاضر",
+      "profilePic": "https://example.com/images/khaled.jpg"
+    },
+    {
+      "id": 5,
+      "name": "علي",
+      "role": "user",
+      "department": "بائع",
+      "shiftStart": "09:00 AM",
+      "shiftEnd": "05:00 PM",
+      "status": "غائب",
+      "profilePic": "https://example.com/images/ali.jpg"
+    },
+    {
+      "id": 6,
+      "name": "محمود",
+      "role": "user",
+      "department": "تاجر",
+      "shiftStart": "08:30 AM",
+      "shiftEnd": "04:30 PM",
+      "status": "حاضر",
+      "profilePic": "https://example.com/images/mahmoud.jpg"
+    }
+  ]
+}
