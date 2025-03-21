@@ -1,82 +1,53 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import TitleHeader from '../../components/TitleHeader';
 import SearchFilter from '../../components/Employee/SearchFilter';
 import EmployeeTable from '../../components/Employee/EmployeeTable';
 import Pagination from '../../components/Employee/Pagination';
+import { getEmployees } from '../../services/employeeService';
 
 const MainList = ({ navigation }) => {
-  // بيانات الموظفين
-  const employees = [
-    { 
-      id: 1, 
-      name: 'Jane Cooper', 
-      department: 'Sales', 
-      shiftStart: '08:00 AM', 
-      shiftEnd: '05:00 PM', 
-      status: 'Active' 
-    },
-    { 
-      id: 2, 
-      name: 'Floyd Miles', 
-      department: 'Sales', 
-      shiftStart: '08:00 AM', 
-      shiftEnd: '05:00 PM', 
-      status: 'Inactive' 
-    },
-    { 
-      id: 3, 
-      name: 'Ronald Richards', 
-      department: 'Customer Service', 
-      shiftStart: '08:00 AM', 
-      shiftEnd: '05:00 PM', 
-      status: 'Inactive' 
-    },
-    { 
-      id: 4, 
-      name: 'Marvin McKinney', 
-      department: 'Customer Service', 
-      shiftStart: '08:00 AM', 
-      shiftEnd: '05:00 PM', 
-      status: 'Active' 
-    },
-    { 
-      id: 5, 
-      name: 'Jerome Bell', 
-      department: 'Manager', 
-      shiftStart: '08:00 AM', 
-      shiftEnd: '05:00 PM', 
-      status: 'Active' 
-    },
-  ];
-
-  // حالة البحث
+  const [allEmployees, setAllEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
-
-  // عدد العناصر في كل صفحة
+  const [selectedDepartment, setSelectedDepartment] = useState('All');
+  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 2;
 
-  // حالات إدارة الصفحات
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(employees.length / itemsPerPage);
+  // جلب البيانات من API
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const data = await getEmployees();
+        setAllEmployees(data);
+        setFilteredEmployees(data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // حساب بيانات الصفحة الحالية
-  const indexOfLastItem = currentPage * itemsPerPage; 
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage; 
-  const currentEmployees = employees.slice(indexOfFirstItem, indexOfLastItem);
+    fetchEmployees();
+  }, []);
 
-  // الدوال للتحكم في الصفحات
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
+  // تطبيق البحث والفلترة
+  useEffect(() => {
+    const filtered = allEmployees.filter(emp => {
+      const matchesSearch = emp.name.toLowerCase().includes(searchText.toLowerCase());
+      const matchesDepartment = selectedDepartment === 'All' || emp.department === selectedDepartment;
+      return matchesSearch && matchesDepartment;
+    });
+    setFilteredEmployees(filtered);
+    setCurrentPage(1);
+  }, [searchText, selectedDepartment, allEmployees]);
 
-  const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  // حساب الباجينيشن
+  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentEmployees = filteredEmployees.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <View style={styles.container}>
@@ -85,23 +56,38 @@ const MainList = ({ navigation }) => {
       <SearchFilter 
         searchText={searchText}
         onSearchChange={setSearchText}
+        selectedDepartment={selectedDepartment}
+        onDepartmentChange={setSelectedDepartment}
       />
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <EmployeeTable
-          data={currentEmployees} 
-          onEdit={(id) => navigation.navigate('EditUsers', { id })}
-          onShift={(id) => navigation.navigate('EditShifts', { id })}
-          onDelete={(id) => console.log('Delete', id)}
-        />
+      {loading ? (
+        <ActivityIndicator size="large" color="#000" />
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollContent}>
 
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPrev={handlePrev}
-          onNext={handleNext}
-        />
-      </ScrollView>
+          <EmployeeTable
+            data={currentEmployees} 
+            onEdit={(id) => navigation.navigate('EditUsers', { id })}
+            onShift={(employeeId) => {
+              const employee = allEmployees.find(e => e.id === employeeId);
+              if (employee?.shifts?.length > 0) {
+                navigation.navigate('EditShifts', { 
+                  employeeId,
+                  shiftId: employee.shifts[0].id 
+                });
+              }
+            }}
+            onDelete={(id) => console.log('Delete', id)}
+          />
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPrev={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            onNext={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          />
+        </ScrollView>
+      )}
     </View>
   );
 };

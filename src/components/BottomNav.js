@@ -2,8 +2,12 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux';
 
 const BottomNav = ({ navigation, activeTab }) => {
+
+  const { user } = useSelector(state => state.auth);
+
   return (
     <View style={styles.container}>
       <TouchableOpacity 
@@ -48,7 +52,8 @@ const BottomNav = ({ navigation, activeTab }) => {
 
       <TouchableOpacity 
         style={styles.navItem}
-        onPress={() => navigation.navigate('UserProfile')}
+        onPress={() => navigation.navigate('UserProfile', { id: user.id })}
+
       >
         <Icon 
           name="person" 

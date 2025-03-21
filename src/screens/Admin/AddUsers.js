@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,57 +10,171 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   Keyboard,
-  Image
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+  Image,
+  Alert,
+} from "react-native";
+import { addEmployee } from "../../services/employeeService";
+import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from "expo-image-picker";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import Toast from "react-native-toast-message";
+
 
 const AddUsers = () => {
-  const [selectedCompany, setSelectedCompany] = useState('');
-  const [gender, setGender] = useState('');
+  const [selectedCompany, setSelectedCompany] = useState("");
+  const [gender, setGender] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
 
-  const companies = ['Company A', 'Company B', 'Company C'];
-  const genders = ['male', 'female'];
+  const companies = ["Company A", "Company B", "Company C"];
+  const genders = ["male", "female"];
+
+  const navigation = useNavigation();
 
   const handleSelectCompany = (company) => {
     setSelectedCompany(company);
     setIsModalVisible(false);
   };
 
+  // image 
+  const pickImage = async () => {
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      Alert.alert("Permission required", "You need to allow access to photos.");
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7,
+    });
+
+    if (!result.canceled) {
+      setProfilePic(result.assets[0].uri);
+      Toast.show({
+        type: "success",
+        text1: "Profile Updated",
+        text2: "Profile picture updated successfully.",
+      });
+    }
+  };
+
+  const handleSave = async () => {
+    if (!name || !email || !phone || !password || !confirmPassword || !selectedCompany || !gender) {
+      Toast.show({
+        type: "error",
+        text1: "Missing Information",
+        text2: "Please fill out all fields.",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Toast.show({
+        type: "error",
+        text1: "Password Mismatch",
+        text2: "Passwords do not match.",
+      });
+      return;
+    }
+
+    const newEmployee = {
+      name,
+      email,
+      phone,
+      password,
+      company: selectedCompany,
+      gender,
+      profilePic: profilePic || "https://via.placeholder.com/100", 
+    };
+
+    try {
+      await addEmployee(newEmployee);
+      Toast.show({
+        type: "success",
+        text1: "User Added",
+        text2: `${name} has been successfully added.`,
+      });
+      navigation.navigate("ManageDashboard");
+
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to add user. Please try again.",
+      });
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ScrollView contentContainerStyle={styles.container}>
-        {/* عنوان الصفحة */}
         <Text style={styles.title}>ADD Users</Text>
-        {/* قسم البروفايل */}
+
+        {/* صورة الملف الشخصي */}
         <View style={styles.profileHeader}>
-          <View style={styles.profileImageContainer}>
+          <TouchableOpacity onPress={pickImage} style={styles.profileImageContainer}>
             <Image
-              source={{
-                uri:
-                  'https://img.freepik.com/free-photo/happy-man-student-with-afro-hairdo-shows-white-teeth-being-good-mood-after-classes_273609-16608.jpg?t=st=1742138896~exp=1742142496~hmac=2cedde6b820211c63e5c75b9af93f6304171c2b0c0597d7fbd473ce89a6e2d76&w=1380'
-              }}
+              source={{ uri: profilePic || "https://via.placeholder.com/100" }}
               style={styles.profileImage}
             />
-            <TouchableOpacity style={styles.editIcon}>
+            <TouchableOpacity style={styles.editIcon} onPress={pickImage}>
               <Icon name="photo-camera" size={18} color="#fff" />
             </TouchableOpacity>
-          </View>
-          <Text style={styles.profileName}>Abu Baghdadi</Text>
+          </TouchableOpacity>
+          <Text style={styles.profileName}>{name || "User Name"}</Text>
         </View>
 
+        {/* حقول الإدخال */}
+        <TextInput 
+          style={styles.input} 
+          placeholder="Name" 
+          placeholderTextColor="#999999" 
+          onChangeText={setName} 
+        />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Email" 
+          keyboardType="email-address" 
+          placeholderTextColor="#999999" 
+          onChangeText={setEmail} 
+        />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Phone" 
+          keyboardType="phone-pad" 
+          placeholderTextColor="#999999" 
+          onChangeText={setPhone} 
+        />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Password" 
+          secureTextEntry 
+          placeholderTextColor="#999999" 
+          onChangeText={setPassword} 
+        />
+        <TextInput 
+          style={styles.input} 
+          placeholder="Confirm Password" 
+          secureTextEntry 
+          placeholderTextColor="#999999" 
+          onChangeText={setConfirmPassword} 
+        />
+
         {/* اختيار الشركة */}
-        <TouchableOpacity
-          style={styles.inputContainer}
-          onPress={() => setIsModalVisible(true)}>
-          <Text
-            style={[
-              styles.inputText,
-              !selectedCompany && styles.placeholder
-            ]}>
-            {selectedCompany || 'Chosen company'}
+        <TouchableOpacity 
+          style={styles.inputContainer} 
+          onPress={() => setIsModalVisible(true)}
+        >
+          <Text style={[styles.inputText, !selectedCompany && styles.placeholder]}>
+            {selectedCompany || "Choose a company"}
           </Text>
           <Icon name="arrow-drop-down" size={24} color="#666" />
         </TouchableOpacity>
@@ -74,16 +188,18 @@ const AddUsers = () => {
                 data={companies}
                 keyExtractor={(item) => item}
                 renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={styles.modalItem}
-                    onPress={() => handleSelectCompany(item)}>
+                  <TouchableOpacity 
+                    style={styles.modalItem} 
+                    onPress={() => handleSelectCompany(item)}
+                  >
                     <Text style={styles.modalItemText}>{item}</Text>
                   </TouchableOpacity>
                 )}
               />
-              <TouchableOpacity
-                style={styles.modalClose}
-                onPress={() => setIsModalVisible(false)}>
+              <TouchableOpacity 
+                style={styles.modalClose} 
+                onPress={() => setIsModalVisible(false)}
+              >
                 <Text style={styles.modalCloseText}>Close</Text>
               </TouchableOpacity>
             </View>
@@ -92,69 +208,25 @@ const AddUsers = () => {
 
         {/* اختيار الجنس */}
         <View style={styles.genderContainer}>
-          <Text style={styles.label}>Please select your gender identity</Text>
+          <Text style={styles.label}>Select your gender</Text>
           <View style={styles.genderOptions}>
             {genders.map((g) => (
               <TouchableOpacity
                 key={g}
-                style={[
-                  styles.genderButton,
-                  gender === g && styles.selectedGender
-                ]}
-                onPress={() => setGender(g)}>
-                <View
-                  style={[
-                    styles.radio,
-                    gender === g && styles.radioSelected
-                  ]}>
+                style={[styles.genderButton, gender === g && styles.selectedGender]}
+                onPress={() => setGender(g)}
+              >
+                <View style={[styles.radio, gender === g && styles.radioSelected]}>
                   {gender === g && <View style={styles.radioInner} />}
                 </View>
-                <Text style={styles.genderText}>
-                  {g === 'male' ? 'Man' : 'Woman'}
-                </Text>
+                <Text style={styles.genderText}>{g === "male" ? "Man" : "Woman"}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
-        {/* حقول النموذج */}
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Your Username"
-          placeholderTextColor="#999"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Your Email"
-          keyboardType="email-address"
-          placeholderTextColor="#999"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Enter Your Phone Number"
-          keyboardType="phone-pad"
-          placeholderTextColor="#999"
-        />
-
-        <TextInput 
-          style={styles.input} 
-          placeholder="Enter Your Password" 
-          secureTextEntry
-          placeholderTextColor="#999"
-          onChangeText={setPassword}
-        />
-
-        <TextInput 
-          style={styles.input} 
-          placeholder="Confirm password" 
-          secureTextEntry
-          placeholderTextColor="#999"
-          onChangeText={setConfirmPassword}
-        />
-
-
-        {/* زر حفظ التعديلات */}
-        <TouchableOpacity style={styles.signupButton}>
+        {/* زر الحفظ */}
+        <TouchableOpacity style={styles.signupButton} onPress={handleSave}>
           <Text style={styles.signupText}>Save Changes</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -164,166 +236,166 @@ const AddUsers = () => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
     flexGrow: 1,
     padding: 25,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: "#FFFFFF",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "#1A1A1A",
+    textAlign: "center",
+    marginVertical: 30,
   },
   profileHeader: {
-    alignItems: 'center',
-    marginBottom: 30
+    alignItems: "center",
+    marginBottom: 20,
   },
   profileImageContainer: {
-    position: 'relative'
+    position: "relative",
   },
   profileImage: {
     width: 100,
     height: 100,
-    borderRadius: 50
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: "#E0E0E0",
   },
   editIcon: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: '#007AFF',
+    backgroundColor: "#007AFF",
     borderRadius: 12,
-    padding: 4
+    padding: 4,
   },
   profileName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 10,
-    color: '#1A1A1A'
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: '#1A1A1A',
-    textAlign: 'center',
-    marginBottom: 30
+    color: "#1A1A1A",
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: "#E0E0E0",
     borderRadius: 8,
     paddingHorizontal: 15,
     height: 50,
-    marginBottom: 15
+    marginBottom: 15,
   },
   inputText: {
     fontSize: 16,
-    color: '#1A1A1A'
+    color: "#1A1A1A",
   },
   placeholder: {
-    color: '#999999'
+    color: "#999999",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: "#E0E0E0",
     borderRadius: 8,
     padding: 10,
     fontSize: 16,
     marginBottom: 15,
-    color: '#1A1A1A'
+    color: "#1A1A1A",
+    height: 50,
   },
   genderContainer: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   label: {
     fontSize: 13,
-    color: '#666',
-    marginBottom: 10
+    color: "#666",
+    marginBottom: 10,
   },
   genderOptions: {
-    flexDirection: 'row',
-    
+    flexDirection: "row",
+    gap: 20,
   },
   genderButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
     padding: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
-    marginRight: 10
+    borderColor: "#E0E0E0",
   },
   selectedGender: {
-    borderColor: '#007AFF'
+    borderColor: "#007AFF",
   },
   radio: {
     width: 20,
     height: 20,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
-    justifyContent: 'center',
-    alignItems: 'center'
+    borderColor: "#E0E0E0",
+    justifyContent: "center",
+    alignItems: "center",
   },
   radioSelected: {
-    borderColor: '#007AFF'
+    borderColor: "#007AFF",
   },
   radioInner: {
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '#007AFF'
+    backgroundColor: "#007AFF",
   },
   genderText: {
     fontSize: 16,
-    color: '#1A1A1A',
-    marginLeft: 8
+    color: "#1A1A1A",
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    padding: 20
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    padding: 20,
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 12,
-    padding: 20
+    padding: 20,
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 15,
-    color: '#1A1A1A'
+    color: "#1A1A1A",
   },
   modalItem: {
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#F0F0F0'
+    borderBottomColor: "#F0F0F0",
   },
   modalItemText: {
     fontSize: 16,
-    color: '#1A1A1A'
+    color: "#1A1A1A",
   },
   modalClose: {
     marginTop: 15,
-    alignSelf: 'flex-end'
+    alignSelf: "flex-end",
   },
   modalCloseText: {
-    color: '#007AFF',
+    color: "#007AFF",
     fontSize: 16,
-    fontWeight: '500'
+    fontWeight: "500",
   },
   signupButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: "#007AFF",
     borderRadius: 8,
     padding: 12,
-    alignItems: 'center',
-    marginTop: 20
+    alignItems: "center",
+    marginTop: 20,
   },
   signupText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '600'
-  }
+    fontWeight: "600",
+  },
 });
 
-
-export default AddUsers
+export default AddUsers;

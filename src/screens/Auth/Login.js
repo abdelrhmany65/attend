@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Text,
   View,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-} from 'react-native';
+} from "react-native";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/slices/authSlice";
+import Toast from "react-native-toast-message";
 
 const Login = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const handleLogin = () => {
+    if (!email || !password) {
+
+      Toast.show({
+        type: "error",
+        text1: "خطأ في الإدخال",
+        text2: "يرجى إدخال البريد الإلكتروني وكلمة المرور",
+      });
+      return;
+    }
+
+    dispatch(login(email, password));
+  };
 
   return (
     <View style={styles.container}>
@@ -37,7 +56,7 @@ const Login = ({ navigation }) => {
 
         {/* Remember Me and Forgot Password */}
         <View style={styles.optionsContainer}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.rememberMeContainer}
             onPress={() => setRememberMe(!rememberMe)}
           >
@@ -46,97 +65,100 @@ const Login = ({ navigation }) => {
             </View>
             <Text style={styles.rememberText}>Remember Me</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+
+          <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
             <Text style={styles.optionText}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ManageDashboard')}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
         {/* Sign Up Link */}
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
           <Text style={styles.signUpText}>Don’t have an account? Sign Up</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Toast Message Component */}
+      <Toast />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { 
+  container: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
   },
   contentContainer: {
     padding: 20,
     marginHorizontal: 20,
   },
-  title: { 
+  title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 30,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     padding: 15,
     marginBottom: 15,
   },
   optionsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 25,
-    alignItems: 'center',
+    alignItems: "center",
   },
   rememberMeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   checkbox: {
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: '#007bff',
+    borderColor: "#007bff",
     borderRadius: 4,
     marginRight: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   checked: {
-    backgroundColor: '#007bff',
+    backgroundColor: "#007bff",
   },
   checkmark: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 12,
   },
   rememberText: {
-    color: '#007bff',
+    color: "#007bff",
   },
-  optionText: { 
-    color: '#007bff',
+  optionText: {
+    color: "#007bff",
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: "#007bff",
     padding: 15,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 15,
   },
-  buttonText: { 
-    color: '#fff',
-    fontWeight: 'bold',
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
   },
-  signUpText: { 
-    textAlign: 'center',
-    color: '#007bff',
+  signUpText: {
+    textAlign: "center",
+    color: "#007bff",
   },
 });
 

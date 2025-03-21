@@ -8,8 +8,13 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { logout } from '../../redux/slices/authSlice';
+import { useDispatch, useSelector } from "react-redux";
 
 const Settings = ({ navigation }) => {
+
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Header Section */}
@@ -33,7 +38,7 @@ const Settings = ({ navigation }) => {
         <MenuItem
           icon="edit"
           text="Edit profile information"
-          onPress={() => navigation.navigate('UserProfile')}
+          onPress={() => navigation.navigate('UserProfile', { id: user.id })}
         />
         <MenuItem
           icon="notifications"
@@ -83,12 +88,14 @@ const Settings = ({ navigation }) => {
           onPress={() => navigation.navigate('Contact')}
         />
         <MenuItem icon="privacy-tip" text="Privacy policy" />
-      </View>
 
-      <TouchableOpacity style={styles.logoutButton}>
-        <Icon name="logout" size={24} color="#333" />
-        <Text style={styles.logoutText}>Log out</Text>
-      </TouchableOpacity>
+        <MenuItem 
+        icon="logout"
+        text="Logout"
+        onPress={() => dispatch(logout())}
+        />
+
+      </View>
     </ScrollView>
   );
 };
@@ -138,7 +145,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   card: {
-    width: '100%',
+    width: '95%',
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 15,
@@ -166,17 +173,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#007AFF',
     marginRight: 5,
-  },
-  logoutButton: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 15,
-  },
-  logoutText: {
-    fontSize: 18,
-    color: '#333',
-    marginLeft: 8,
   },
 });
 

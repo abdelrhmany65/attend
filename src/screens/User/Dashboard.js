@@ -50,17 +50,17 @@ const Dashboard = ({ navigation }) => {
       <DateSelector days={days} />
 
       {/* Attendance Status */}
-      <View style={styles.attendanceHeader}>
+      {/* <View style={styles.attendanceHeader}>
         <Text style={styles.attendanceTitle}>Attendance</Text>
         <Text style={styles.attendanceSubtitle}>current month</Text>
-      </View>
+      </View> */}
 
       {/* Statistics Grid */}
-      <View style={styles.statsGrid}>
+      {/* <View style={styles.statsGrid}>
         {stats.map((item, index) => (
           <StatItem key={index} {...item} />
         ))}
-      </View>
+      </View> */}
 
       {/* Check-in Button */}
       <CheckInButton />

@@ -1,64 +1,111 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Ahmed",
+      "email": "all@gmail.com",
+      "password": "1",
       "role": "admin",
-      "department": "Seller",
-      "shiftStart": "09:00 AM",
-      "shiftEnd": "05:00 PM",
-      "status": "Present",
-      "profilePic": "https://example.com/images/ahmed.jpg"
+      "department": "Merchant",
+      "shifts": [
+        {
+          "date": "2023-09-15",
+          "start": "08:30",
+          "end": "16:30",
+          "status": "Present"
+        }
+      ],
+      "profilePic": "https://images.pexels.com/photos/6084438/pexels-photo-6084438.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "username": "Yy",
+      "phone": "2"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Sara",
+      "email": "s@gmail.com",
+      "password": "2",
       "role": "admin",
       "department": "Merchant",
-      "shiftStart": "08:30 AM",
-      "shiftEnd": "04:30 PM",
-      "status": "Present",
-      "profilePic": "https://example.com/images/sara.jpg"
+      "shifts": [
+        {
+          "date": "2023-09-15",
+          "start": "08:30",
+          "end": "16:30",
+          "status": "Present"
+        }
+      ],
+      "profilePic": "https://images.pexels.com/photos/6084438/pexels-photo-6084438.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Mohamed",
+      "email": "m@gmail.com",
+      "password": "3",
       "role": "user",
       "department": "Seller",
-      "shiftStart": "09:00 AM",
-      "shiftEnd": "05:00 PM",
-      "status": "Absent",
-      "profilePic": "https://example.com/images/mohamed.jpg"
+      "shifts": [
+        {
+          "date": "2023-09-15",
+          "start": "08:30",
+          "end": "16:30",
+          "status": "Present"
+        },
+        {
+          "date": "2025-03-20",
+          "start": "01:45",
+          "end": "03:45",
+          "status": "Scheduled"
+        }
+      ],
+      "profilePic": "https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Khaled",
-      "role": "user",
-      "department": "Merchant",
-      "shiftStart": "08:30 AM",
-      "shiftEnd": "04:30 PM",
-      "status": "Present",
-      "profilePic": "https://example.com/images/khaled.jpg"
-    },
-    {
-      "id": 5,
-      "name": "Ali",
+      "email": "ka@gmail.com",
+      "password": "4",
       "role": "user",
       "department": "Seller",
-      "shiftStart": "09:00 AM",
-      "shiftEnd": "05:00 PM",
-      "status": "Absent",
-      "profilePic": "https://example.com/images/ali.jpg"
+      "shifts": [
+        {
+          "date": "2023-09-15",
+          "start": "08:30",
+          "end": "16:30",
+          "status": "Present"
+        },
+        {
+          "date": "2025-03-20",
+          "start": "01:45",
+          "end": "03:45",
+          "status": "Scheduled"
+        }
+      ],
+      "profilePic": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Fattendace-52f0c5e2-60fd-4026-946b-004b8b82faa9/ImagePicker/ade1d396-7fce-485c-a93a-58dea1c9d8d1.jpeg",
+      "phone": "1",
+      "gender": "male"
     },
     {
-      "id": 6,
-      "name": "Mahmoud",
+      "id": "5",
+      "name": "ali",
+      "email": "al@gmail.com",
+      "password": "5",
       "role": "user",
-      "department": "Merchant",
-      "shiftStart": "08:30 AM",
-      "shiftEnd": "04:30 PM",
-      "status": "Present",
-      "profilePic": "https://example.com/images/mahmoud.jpg"
+      "department": "Seller",
+      "shifts": [
+        {
+          "date": "2023-09-15",
+          "start": "08:30",
+          "end": "16:30",
+          "status": "Present"
+        },
+        {
+          "date": "2025-03-20",
+          "start": "01:45",
+          "end": "03:45",
+          "status": "Scheduled"
+        }
+      ],
+      "profilePic": "https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     }
   ]
 }

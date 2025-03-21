@@ -1,12 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import AppNavigator from './navigation/AppNavigator';
+import React from "react";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import AppNavigator from "./navigation/AppNavigator";
+import Toast from 'react-native-toast-message';
 
-export default function App() {
+const App = () => {
   return (
-    <NavigationContainer>
+    <Provider store={store}>
       <AppNavigator />
-    </NavigationContainer>
+      <Toast />
+    </Provider>
   );
-}
+};
+
+export default App;

@@ -1,3 +1,4 @@
+// Signup.js
 import React, { useState } from 'react';
 import {
   Text,
@@ -14,18 +15,58 @@ import {
   Keyboard,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch } from "react-redux";
+import { signup } from "../../redux/slices/authSlice";
+import Toast from "react-native-toast-message";
 
 const Signup = ({ navigation }) => {
   const [selectedCompany, setSelectedCompany] = useState('');
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const companies = ["Company A", "Company B", "Company C"];
   const [gender, setGender] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const companies = ['Al-Asilan Decorations', 'Factory', 'Seller'];
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  
+  const dispatch = useDispatch();
 
   const handleSelectCompany = (company) => {
     setSelectedCompany(company);
     setIsModalVisible(false);
+  };
+
+  const handleSignup = () => {
+    // Check if all required fields are filled
+    if (!name || !email || !phone || !password || !confirmPassword || !selectedCompany || !gender) {
+      Toast.show({
+        type: "error",
+        text1: "Required Fields",
+        text2: "Please fill in all the required fields",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Toast.show({
+        type: "error",
+        text1: "Password Mismatch",
+        text2: "Please ensure both passwords match",
+      });
+      return;
+    }
+
+    const newUser = {
+      name,
+      email,
+      phone,
+      password,
+      company: selectedCompany,
+      gender,
+    };
+
+    dispatch(signup(newUser));
   };
 
   return (
@@ -35,14 +76,41 @@ const Signup = ({ navigation }) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.title}>Create an account</Text>
+          <Text style={styles.title}>Create a New Account</Text>
+          
+
+          {/* Full Name */}
+          <TextInput 
+            style={styles.input} 
+            placeholder="Full Name"
+            value={name}
+            onChangeText={setName}
+          />
+
+          {/* Email Address */}
+          <TextInput 
+            style={styles.input} 
+            placeholder="Email Address"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+          />
+
+          {/* Phone Number */}
+          <TextInput 
+            style={styles.input} 
+            placeholder="Phone Number"
+            keyboardType="phone-pad"
+            value={phone}
+            onChangeText={setPhone}
+          />
 
           {/* Company Selection */}
           <TouchableOpacity
             style={styles.inputContainer}
             onPress={() => setIsModalVisible(true)}>
             <Text style={[styles.inputText, !selectedCompany && styles.placeholder]}>
-              {selectedCompany || 'Chosen company'}
+              {selectedCompany || 'Choose Company'}
             </Text>
             <Icon name="arrow-drop-down" size={24} color="#666" />
           </TouchableOpacity>
@@ -72,65 +140,50 @@ const Signup = ({ navigation }) => {
             </View>
           </Modal>
 
-      {/* Gender Selection */}
-      <View style={styles.genderContainer}>
-        <Text style={styles.label}>Please select your gender identity</Text>
-        <View style={styles.genderOptions}>
-          <TouchableOpacity
-            style={[styles.genderButton, gender === 'male' && styles.selectedGender]}
-            onPress={() => setGender('male')}>
-            <View style={[styles.radio, gender === 'male' && styles.radioSelected]}>
-              {gender === 'male' && <View style={styles.radioInner} />}
-            </View>
-            <Text style={styles.genderText}>Man</Text>
-          </TouchableOpacity>
+          {/* Gender Selection */}
+          <View style={styles.genderContainer}>
+            <Text style={styles.label}>Gender:</Text>
+            <View style={styles.genderOptions}>
+              <TouchableOpacity
+                style={[styles.genderButton, gender === 'male' && styles.selectedGender]}
+                onPress={() => setGender('male')}>
+                <View style={[styles.radio, gender === 'male' && styles.radioSelected]}>
+                  {gender === 'male' && <View style={styles.radioInner} />}
+                </View>
+                <Text style={styles.genderText}>Male</Text>
+              </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.genderButton, gender === 'female' && styles.selectedGender]}
-            onPress={() => setGender('female')}>
-            <View style={[styles.radio, gender === 'female' && styles.radioSelected]}>
-              {gender === 'female' && <View style={styles.radioInner} />}
+              <TouchableOpacity
+                style={[styles.genderButton, gender === 'female' && styles.selectedGender]}
+                onPress={() => setGender('female')}>
+                <View style={[styles.radio, gender === 'female' && styles.radioSelected]}>
+                  {gender === 'female' && <View style={styles.radioInner} />}
+                </View>
+                <Text style={styles.genderText}>Female</Text>
+              </TouchableOpacity>
             </View>
-            <Text style={styles.genderText}>Woman</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+          </View>
 
-          {/* Form Fields */}
+          {/* Password */}
           <TextInput 
             style={styles.input} 
-            placeholder="Enter Your Username" 
-            placeholderTextColor="#999"
-          />
-          <TextInput 
-            style={styles.input} 
-            placeholder="Enter Your Email" 
-            keyboardType="email-address"
-            placeholderTextColor="#999"
-          />
-          <TextInput 
-            style={styles.input} 
-            placeholder="Enter Your Phone Number" 
-            keyboardType="phone-pad"
-            placeholderTextColor="#999"
-          />
-          <TextInput 
-            style={styles.input} 
-            placeholder="Enter Your Password" 
+            placeholder="Password"
             secureTextEntry
-            placeholderTextColor="#999"
+            value={password}
             onChangeText={setPassword}
           />
+
+          {/* Confirm Password */}
           <TextInput 
             style={styles.input} 
-            placeholder="Confirm password" 
+            placeholder="Confirm Password"
             secureTextEntry
-            placeholderTextColor="#999"
+            value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
 
           {/* Sign Up Button */}
-          <TouchableOpacity style={styles.signupButton}>
+          <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
             <Text style={styles.signupText}>Sign Up</Text>
           </TouchableOpacity>
 
