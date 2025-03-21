@@ -37,33 +37,19 @@
       "profilePic": "https://images.pexels.com/photos/6084438/pexels-photo-6084438.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
     },
     {
-      "id": "3",
       "name": "Mohamed",
-      "email": "m@gmail.com",
-      "password": "3",
-      "role": "user",
       "department": "Seller",
-      "shifts": [
-        {
-          "date": "2023-09-15",
-          "start": "08:30",
-          "end": "16:30",
-          "status": "Present"
-        },
-        {
-          "date": "2025-03-20",
-          "start": "01:45",
-          "end": "03:45",
-          "status": "Scheduled"
-        }
-      ],
-      "profilePic": "https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+      "email": "mm@gmail.com",
+      "profilePic": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Fattendace-52f0c5e2-60fd-4026-946b-004b8b82faa9/ImagePicker/edc7cea1-5a14-4592-967a-07d2fc8ef85c.jpeg",
+      "gender": "male",
+      "password": "1",
+      "id": "3"
     },
     {
       "id": "4",
       "name": "Khaled",
       "email": "ka@gmail.com",
-      "password": "4",
+      "password": "4444",
       "role": "user",
       "department": "Seller",
       "shifts": [
@@ -106,6 +92,16 @@
         }
       ],
       "profilePic": "https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+      "name": "Test",
+      "department": "Company B",
+      "email": "Testtt@gmail.com",
+      "phone": "222",
+      "profilePic": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Fattendace-52f0c5e2-60fd-4026-946b-004b8b82faa9/ImagePicker/6331dcb1-1327-4473-9dad-82acc0a53166.jpeg",
+      "gender": "male",
+      "password": "1",
+      "id": "fb80"
     }
   ]
 }

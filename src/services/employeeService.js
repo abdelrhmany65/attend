@@ -56,21 +56,22 @@ export const updateEmployee = async (id, updatedData) => {
   }
 };
 
-// Update a user's data with authentication token
-export const updateUser = async (id, updatedData, token) => {
+// Change password
+export const changePassword = async (id, currentPassword, newPassword) => {
   try {
-    const response = await axios.put(
-      `${API_BASE_URL}/users/${id}`,
-      updatedData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-        },
-      }
-    );
-    return response.data;
+    const response = await axios.get(`${API_BASE_URL}/users/${id}`);
+    const user = response.data;
+
+    if (user.password !== currentPassword) {
+      throw new Error("Current password is incorrect");
+    }
+
+    const updatedUser = { ...user, password: newPassword };
+    const updateResponse = await axios.put(`${API_BASE_URL}/users/${id}`, updatedUser);
+
+    return updateResponse.data;
   } catch (error) {
-    console.error("Error updating user:", error);
+    console.error("Error changing password:", error);
     throw error;
   }
 };

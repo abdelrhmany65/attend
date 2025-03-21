@@ -22,41 +22,45 @@ const EmployeeTable = ({ data, onEdit, onShift, onDelete }) => (
 
       {/* Table Rows */}
       {data.map((employee) => (
-        <View key={employee.id} style={styles.row}>
-          {/* Employee Details */}
-          <Text style={[styles.cell, { width: 160 }]}>{employee.name || "N/A"}</Text>
-          <Text style={[styles.cell, { width: 120 }]}>{employee.department || "N/A"}</Text>
+      <View key={employee.id} style={styles.row}>
+        {/* Employee Details */}
+        <Text style={[styles.cell, { width: 160 }]}>{employee.name || "N/A"}</Text>
+        <Text style={[styles.cell, { width: 120 }]}>{employee.department || "N/A"}</Text>
 
-          {/* Shifts */}
-          {(employee.shifts && employee.shifts.length > 0) ? (
-            employee.shifts.map((shift, index) => (
-              <View key={index} style={styles.shiftRow}>
-                <Text style={[styles.cell, { width: 120 }]}>{shift.start || "N/A"}</Text>
-                <Text style={[styles.cell, { width: 120 }]}>{shift.end || "N/A"}</Text>
+        {/* Last Shift */}
+        {employee.shifts && employee.shifts.length > 0 ? (
+          (() => {
+            const lastShift = employee.shifts[employee.shifts.length - 1]; // جلب آخر شيفت
+            return (
+              <View style={styles.shiftRow}>
+                <Text style={[styles.cell, { width: 120 }]}>{lastShift.start || "N/A"}</Text>
+                <Text style={[styles.cell, { width: 120 }]}>{lastShift.end || "N/A"}</Text>
                 <View style={[styles.statusCell, { width: 100 }]}>
-                  <StatusBadge status={shift.status || "Unknown"} />
+                  <StatusBadge status={lastShift.status || "Unknown"} />
                 </View>
               </View>
-            ))
-          ) : (
-            // Default values if no shifts are provided
-            <View style={styles.shiftRow}>
-              <Text style={[styles.cell, { width: 120 }]}>N/A</Text>
-              <Text style={[styles.cell, { width: 120 }]}>N/A</Text>
-              <View style={[styles.statusCell, { width: 100 }]}>
-                <StatusBadge status="Unknown" />
-              </View>
+            );
+          })()
+        ) : (
+          // Default values if no shifts are provided
+          <View style={styles.shiftRow}>
+            <Text style={[styles.cell, { width: 120 }]}>N/A</Text>
+            <Text style={[styles.cell, { width: 120 }]}>N/A</Text>
+            <View style={[styles.statusCell, { width: 100 }]}>
+              <StatusBadge status="Unknown" />
             </View>
-          )}
-
-          {/* Actions */}
-          <View style={[styles.actions, { width: 150 }]}>
-            <ActionButton icon="edit" color="#4CAF50" onPress={() => onEdit(employee.id)} />
-            <ActionButton icon="access-time" color="#2196F3" onPress={() => onShift(employee.id)} />
-            <ActionButton icon="delete" color="#F44336" onPress={() => onDelete(employee.id)} />
           </View>
+        )}
+
+        {/* Actions */}
+        <View style={[styles.actions, { width: 150 }]}>
+          <ActionButton icon="edit" color="#4CAF50" onPress={() => onEdit(employee.id)} />
+          <ActionButton icon="access-time" color="#2196F3" onPress={() => onShift(employee.id)} />
+          <ActionButton icon="delete" color="#F44336" onPress={() => onDelete(employee.id)} />
         </View>
+      </View>
       ))}
+
     </View>
   </ScrollView>
 );

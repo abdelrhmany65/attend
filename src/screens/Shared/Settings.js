@@ -15,22 +15,25 @@ const Settings = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth);
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Header Section */}
       <View style={styles.headerSection}>
         <View style={styles.profileImageContainer}>
           <Image
-            source={{
-              uri: 'https://img.freepik.com/free-photo/happy-man-student-with-afro-hairdo-shows-white-teeth-being-good-mood-after-classes_273609-16608.jpg?t=st=1742138896~exp=1742142496~hmac=2cedde6b820211c63e5c75b9af93f6304171c2b0c0597d7fbd473ce89a6e2d76&w=1380',
-            }}
+            source={
+              user && user.profilePic
+                ? { uri: user.profilePic }
+                : require('../../../assets/default-profile.png') 
+            }
             style={styles.profileImage}
           />
           <TouchableOpacity style={styles.editIcon}>
             <Icon name="photo-camera" size={18} color="#fff" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.profileName}>Abu Baghdadi</Text>
+        <Text style={styles.profileName}>{user ? user.name : "Guest"}</Text>
       </View>
 
       {/* Settings Sections */}

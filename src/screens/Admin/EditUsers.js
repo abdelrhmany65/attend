@@ -65,14 +65,17 @@ const EditUsers = ({ route, navigation }) => {
       };
   
       await updateEmployee(id, updatedData);
+  
       Toast.show({
         type: "success",
         text1: "Success",
         text2: "Profile updated successfully!",
       });
+      if (id === user.id) {
+        const updatedUser = { ...user, ...updatedData };
+        dispatch(updateUser(updatedUser));
+      }
   
-      const updatedUser = { ...user, ...updatedData };
-      dispatch(updateUser(updatedUser));
       navigation.goBack();
     } catch (error) {
       Toast.show({
@@ -82,6 +85,8 @@ const EditUsers = ({ route, navigation }) => {
       });
     }
   };
+  
+  
   
 
   const handleImageEdit = async () => {
@@ -141,7 +146,7 @@ const EditUsers = ({ route, navigation }) => {
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>Select Department</Text>
               <FlatList
-                data={['IT', 'HR', 'Finance']}
+                data={['Company A', 'Company B', 'Company C']}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
                   <TouchableOpacity

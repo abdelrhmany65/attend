@@ -15,13 +15,14 @@ const Header = () => {
       </View>
       <TouchableOpacity onPress={() => navigation.navigate("UserProfile", { id: user?.id })}>
         <Image
-          source={{
-            uri: user && user.profilePic 
-              ? user.profilePic 
-              : "https://img.freepik.com/free-photo/happy-man-student-with-afro-hairdo-shows-white-teeth-being-good-mood-after-classes_273609-16608.jpg",
-          }}
-          style={styles.profilePic}
+            source={
+              user && user.profilePic
+                ? { uri: user.profilePic }
+                : require('../../assets/default-profile.png') 
+            }
+            style={styles.profilePic}
         />
+
       </TouchableOpacity>
     </View>
   );

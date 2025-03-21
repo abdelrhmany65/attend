@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Toast from "react-native-toast-message";
+import { changePassword } from "../../services/employeeService";
 
 const API_BASE_URL = "http://192.168.1.9:3003";
 
@@ -28,12 +29,15 @@ const authSlice = createSlice({
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
     },
+    updatePassword: (state, action) => {
+      state.user.password = action.payload; 
+    },
   },
 });
 
-export const { loginSuccess, signupSuccess, logout, updateUser } = authSlice.actions;
+export const { loginSuccess, signupSuccess, logout, updateUser, updatePassword } = authSlice.actions;
 
-// ✅ دالة تسجيل الدخول
+// Login action
 export const login = (email, password) => async (dispatch) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/users`);
@@ -67,7 +71,7 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
-// ✅ دالة تسجيل حساب جديد
+// Signup action
 export const signup = (userData) => async (dispatch) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/users`, userData);
@@ -85,6 +89,27 @@ export const signup = (userData) => async (dispatch) => {
       type: "error",
       text1: "Signup Failed",
       text2: "An error occurred. Please try again.",
+    });
+  }
+};
+
+// Change password action
+export const changePasswordAction = (id, currentPassword, newPassword) => async (dispatch, getState) => {
+  try {
+    await changePassword(id, currentPassword, newPassword);
+
+    dispatch(updatePassword(newPassword));
+
+    Toast.show({
+      type: "success",
+      text1: "Password Updated",
+      text2: "Your password has been changed successfully!",
+    });
+  } catch (error) {
+    Toast.show({
+      type: "error",
+      text1: "Password Change Failed",
+      text2: error.message || "An error occurred while changing your password.",
     });
   }
 };
