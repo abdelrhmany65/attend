@@ -1,40 +1,10 @@
 {
   "users": [
     {
-      "id": "1",
-      "name": "ahmed",
-      "email": "a@gmail.com",
-      "password": "a",
-      "role": "admin",
-      "department": "Merchant",
-      "shifts": [
-        {
-          "date": "2023-09-15",
-          "start": "08:30",
-          "end": "16:30",
-          "status": "Present",
-          "location": {
-            "latitude": "30.0444",
-            "longitude": "31.2357"
-          }
-        },
-        {
-          "date": "2025-03-21",
-          "start": "14:21:53",
-          "location": {
-            "latitude": 30.2473944,
-            "longitude": 31.0587971
-          },
-          "status": "Present"
-        }
-      ],
-      "profilePic": "https://images.pexels.com/photos/6084438/pexels-photo-6084438.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-    },
-    {
       "id": "2",
       "name": "Sara",
       "email": "s@gmail.com",
-      "password": "2",
+      "password": "3",
       "role": "admin",
       "department": "Merchant",
       "shifts": [
@@ -56,9 +26,58 @@
             "longitude": 31.0587997
           },
           "status": "Present"
+        },
+        {
+          "date": "2025-03-22",
+          "start": "05:26:00",
+          "location": {
+            "latitude": 30.2474101,
+            "longitude": 31.0588045
+          },
+          "status": "Present",
+          "end": "05:29:29"
         }
       ],
       "profilePic": "https://images.pexels.com/photos/6084438/pexels-photo-6084438.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+    },
+    {
+      "name": "Testtttoo",
+      "email": "Toott@gmail.com",
+      "phone": "33",
+      "profilePic": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Fattendace-52f0c5e2-60fd-4026-946b-004b8b82faa9/ImagePicker/2f51769d-a78f-41ea-ac79-3a7701981c39.jpeg",
+      "gender": "male",
+      "password": "2",
+      "id": "e3c9",
+      "shifts": [
+        {
+          "date": "2025-03-21",
+          "start": "01:38",
+          "end": "04:35",
+          "status": "Scheduled"
+        }
+      ]
+    },
+    {
+      "id": "09f6",
+      "name": "Yy",
+      "email": "Y@gmail.com",
+      "phone": "58",
+      "password": "4",
+      "company": "Company B",
+      "gender": "male",
+      "profilePic": "file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252Fattendace-52f0c5e2-60fd-4026-946b-004b8b82faa9/ImagePicker/d831678d-4a73-4f70-bb83-6538f69c87a0.jpeg",
+      "shifts": [
+        {
+          "date": "2025-03-22",
+          "start": "05:29:54",
+          "location": {
+            "latitude": 30.2472725,
+            "longitude": 31.0586058
+          },
+          "status": "Present",
+          "end": "05:30:05"
+        }
+      ]
     }
   ]
 }
