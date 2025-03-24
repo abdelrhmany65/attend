@@ -52,7 +52,8 @@ const Settings = ({ navigation }) => {
           icon="language"
           text="اللغة"
           status="العربية"
-          onPress={() => navigation.navigate('Language')}
+          // onPress={() => navigation.navigate('Language')}
+          disabled={true}
         />
       </View>
 
