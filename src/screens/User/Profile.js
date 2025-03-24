@@ -36,8 +36,8 @@ const UserEditProfile = () => {
     profileImage: '',
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const companies = ['Company A', 'Company B', 'Company C'];
-  const genders = ['male', 'female'];
+  const companies = ['شركة أ', 'شركة ب', 'شركة ج'];
+  const genders = ['ذكر', 'أنثى'];
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -52,11 +52,11 @@ const UserEditProfile = () => {
           profileImage: userData.profileImage || 'https://example.com/default-avatar.jpg',
         });
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('خطأ في جلب بيانات المستخدم:', error);
         Toast.show({
           type: 'error',
-          text1: 'Error Loading Data',
-          text2: 'Unable to load profile information',
+          text1: 'خطأ في تحميل البيانات',
+          text2: 'تعذر تحميل معلومات الملف الشخصي',
         });
       } finally {
         setLoading(false);
@@ -71,8 +71,8 @@ const UserEditProfile = () => {
     if (!permissionResult.granted) {
       Toast.show({
         type: "error",
-        text1: "Permission Denied",
-        text2: "You need to allow access to your gallery.",
+        text1: "تم رفض الإذن",
+        text2: "يجب السماح بالوصول إلى المعرض.",
       });
       return;
     }
@@ -86,7 +86,7 @@ const UserEditProfile = () => {
     
   
     if (!result.canceled && result.assets.length > 0) {
-      console.log("Selected Image URI:", result.assets[0].uri);
+      console.log("رابط الصورة المحددة:", result.assets[0].uri);
       setFormData({ ...formData, profileImage: result.assets[0].uri });
     }
   };
@@ -101,16 +101,16 @@ const UserEditProfile = () => {
     if (!formData.email.includes('@')) {
       Toast.show({ 
         type: 'error', 
-        text1: 'Invalid Email',
-        text2: 'Please enter a valid email address',
+        text1: 'بريد إلكتروني غير صالح',
+        text2: 'يرجى إدخال عنوان بريد إلكتروني صحيح',
       });
       return false;
     }
     if (formData.phone && !/^\d+$/.test(formData.phone)) {
       Toast.show({
         type: 'error',
-        text1: 'Invalid Phone Number',
-        text2: 'Phone number must contain digits only',
+        text1: 'رقم هاتف غير صالح',
+        text2: 'يجب أن يحتوي رقم الهاتف على أرقام فقط',
       });
       return false;
     }
@@ -138,17 +138,17 @@ const UserEditProfile = () => {
       
       Toast.show({
         type: 'success',
-        text1: 'Profile Updated',
-        text2: 'Your profile changes have been saved successfully',
+        text1: 'تم تحديث الملف الشخصي',
+        text2: 'تم حفظ التغييرات بنجاح',
       });
       
       navigation.goBack();
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error('خطأ في تحديث الملف الشخصي:', error);
       Toast.show({
         type: 'error',
-        text1: 'Update Error',
-        text2: 'Failed to save profile changes',
+        text1: 'خطأ في التحديث',
+        text2: 'فشل في حفظ التغييرات',
       });
     }
   };
@@ -165,10 +165,10 @@ const UserEditProfile = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ScrollView contentContainerStyle={styles.container}>
-        {/* Title */}
-        <Text style={styles.title}>Edit Profile Information</Text>
+        {/* العنوان */}
+        <Text style={styles.title}>تعديل المعلومات الشخصية</Text>
 
-        {/* Profile Section */}
+        {/* قسم الصورة الشخصية */}
         <View style={styles.profileHeader}>
           <View style={styles.profileImageContainer}>
             <Image
@@ -179,24 +179,24 @@ const UserEditProfile = () => {
               <Icon name="photo-camera" size={18} color="#fff" />
             </TouchableOpacity>
           </View>
-          <Text style={styles.profileName}>{formData.username || 'User Name'}</Text>
+          <Text style={styles.profileName}>{formData.username || 'اسم المستخدم'}</Text>
         </View>
 
-        {/* Company Selection */}
+        {/* اختيار الشركة */}
         <TouchableOpacity
           style={styles.inputContainer}
           onPress={() => setIsModalVisible(true)}>
           <Text style={[styles.inputText, !formData.company && styles.placeholder]}>
-            {formData.company || 'Select Company'}
+            {formData.company || 'اختر شركة'}
           </Text>
           <Icon name="arrow-drop-down" size={24} color="#666" />
         </TouchableOpacity>
 
-        {/* Modal for Company Selection */}
+        {/* نافذة اختيار الشركة */}
         <Modal visible={isModalVisible} transparent animationType="slide">
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Select a Company</Text>
+              <Text style={styles.modalTitle}>اختر شركة</Text>
               <FlatList
                 data={companies}
                 keyExtractor={(item) => item}
@@ -211,15 +211,15 @@ const UserEditProfile = () => {
               <TouchableOpacity
                 style={styles.modalClose}
                 onPress={() => setIsModalVisible(false)}>
-                <Text style={styles.modalCloseText}>Close</Text>
+                <Text style={styles.modalCloseText}>إغلاق</Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
 
-        {/* Gender Selection */}
+        {/* اختيار الجنس */}
         <View style={styles.genderContainer}>
-          <Text style={styles.label}>Select your gender</Text>
+          <Text style={styles.label}>اختر جنسك</Text>
           <View style={styles.genderOptions}>
             {genders.map((g) => (
               <TouchableOpacity
@@ -237,24 +237,24 @@ const UserEditProfile = () => {
                   {formData.gender === g && <View style={styles.radioInner} />}
                 </View>
                 <Text style={styles.genderText}>
-                  {g === 'male' ? 'Man' : 'Woman'}
+                  {g === 'ذكر' ? 'ذكر' : 'أنثى'}
                 </Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
-        {/* Input Fields */}
+        {/* حقول الإدخال */}
         <TextInput
           style={styles.input}
-          placeholder="Enter Your Username"
+          placeholder="أدخل اسم المستخدم"
           value={formData.username}
           onChangeText={(text) => setFormData({ ...formData, username: text })}
           placeholderTextColor="#999"
         />
         <TextInput
           style={styles.input}
-          placeholder="Enter Your Email"
+          placeholder="أدخل بريدك الإلكتروني"
           value={formData.email}
           onChangeText={(text) => setFormData({ ...formData, email: text })}
           keyboardType="email-address"
@@ -262,25 +262,27 @@ const UserEditProfile = () => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Enter Your Phone Number"
+          placeholder="أدخل رقم هاتفك"
           value={formData.phone}
           onChangeText={(text) => setFormData({ ...formData, phone: text })}
           keyboardType="phone-pad"
           placeholderTextColor="#999"
         />
 
-        {/* Save Button */}
+        {/* زر الحفظ */}
         <TouchableOpacity style={styles.signupButton} onPress={handleSave}>
-          <Text style={styles.signupText}>Save Changes</Text>
+          <Text style={styles.signupText}>حفظ التغييرات</Text>
         </TouchableOpacity>
       </ScrollView>
     </TouchableWithoutFeedback>
   );
 };
 
+// الأنماط تبقى كما هي دون تغيير
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    justifyContent: 'center',
     padding: 25,
     backgroundColor: '#FFFFFF',
   },
@@ -288,8 +290,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     color: '#1A1A1A',
-    textAlign: 'center',
+    textAlign: 'center', 
     marginBottom: 30,
+    fontFamily: 'Cairo', 
   },
   profileHeader: {
     alignItems: 'center',
@@ -306,7 +309,7 @@ const styles = StyleSheet.create({
   editIcon: {
     position: 'absolute',
     bottom: 0,
-    right: 0,
+    left: 0, 
     backgroundColor: '#007AFF',
     borderRadius: 12,
     padding: 4,
@@ -316,9 +319,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 10,
     color: '#1A1A1A',
+    fontFamily: 'Cairo',
   },
   inputContainer: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse', 
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
@@ -331,6 +335,8 @@ const styles = StyleSheet.create({
   inputText: {
     fontSize: 16,
     color: '#1A1A1A',
+    textAlign: 'right', 
+    fontFamily: 'Cairo', 
   },
   placeholder: {
     color: '#999999',
@@ -343,6 +349,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 15,
     color: '#1A1A1A',
+    textAlign: 'right', 
+    fontFamily: 'Cairo', 
   },
   genderContainer: {
     marginBottom: 20,
@@ -351,18 +359,20 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#666',
     marginBottom: 10,
+    textAlign: 'right', 
+    fontFamily: 'Cairo', 
   },
   genderOptions: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse', 
   },
   genderButton: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     alignItems: 'center',
     padding: 10,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    marginRight: 10,
+    marginLeft: 10,
   },
   selectedGender: {
     borderColor: '#007AFF',
@@ -388,7 +398,8 @@ const styles = StyleSheet.create({
   genderText: {
     fontSize: 16,
     color: '#1A1A1A',
-    marginLeft: 8,
+    marginRight: 8, 
+    fontFamily: 'Cairo', 
   },
   modalOverlay: {
     flex: 1,
@@ -406,6 +417,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 15,
     color: '#1A1A1A',
+    textAlign: 'right', 
+    fontFamily: 'Cairo', 
   },
   modalItem: {
     paddingVertical: 15,
@@ -415,15 +428,18 @@ const styles = StyleSheet.create({
   modalItemText: {
     fontSize: 16,
     color: '#1A1A1A',
+    textAlign: 'right', 
+    fontFamily: 'Cairo', 
   },
   modalClose: {
     marginTop: 15,
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start', 
   },
   modalCloseText: {
     color: '#007AFF',
     fontSize: 16,
     fontWeight: '500',
+    fontFamily: 'Cairo', 
   },
   signupButton: {
     backgroundColor: '#007AFF',
@@ -436,6 +452,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
+    fontFamily: 'Cairo', 
   },
 });
 

@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { logout } from '../../redux/slices/authSlice';
+import { logout, checkOutUser } from '../../redux/slices/authSlice';
 import { useDispatch, useSelector } from "react-redux";
 
 const Settings = ({ navigation }) => {
@@ -18,7 +18,7 @@ const Settings = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Header Section */}
+      {/* القسم العلوي */}
       <View style={styles.headerSection}>
         <View style={styles.profileImageContainer}>
           <Image
@@ -33,53 +33,54 @@ const Settings = ({ navigation }) => {
             <Icon name="photo-camera" size={18} color="#fff" />
           </TouchableOpacity>
         </View>
-        <Text style={styles.profileName}>{user ? user.name : "Guest"}</Text>
+        <Text style={styles.profileName}>{user ? user.name : "زائر"}</Text>
       </View>
 
-      {/* Settings Sections */}
+      {/* أقسام الإعدادات */}
       <View style={styles.card}>
         <MenuItem
           icon="edit"
-          text="Edit profile information"
+          text="تعديل معلومات الملف الشخصي"
           onPress={() => navigation.navigate('UserProfile', { id: user.id })}
         />
         <MenuItem
           icon="notifications"
-          text="Notifications"
-          status="ON"
+          text="الإشعارات"
           onPress={() => navigation.navigate('Notifications')}
         />
         <MenuItem
           icon="language"
-          text="Language"
-          status="English"
+          text="اللغة"
+          status="العربية"
           onPress={() => navigation.navigate('Language')}
         />
       </View>
 
-      {/* New Card for additional actions */}
-      <View style={styles.card}>
-        <MenuItem
-          icon="person-add"
-          text="Add User"
-          onPress={() => navigation.navigate('AddUsers')}
-        />
-        <MenuItem
-          icon="event"
-          text="Add Shift"
-          onPress={() => navigation.navigate('AddShifts')}
-        />
-      </View>
+      {/* قسم جديد للإجراءات الإضافية */}
+      {user?.role === "admin" && (
+        <View style={styles.card}>
+          <MenuItem
+            icon="person-add"
+            text="إضافة مستخدم"
+            onPress={() => navigation.navigate('AddUsers')}
+          />
+          <MenuItem
+            icon="event"
+            text="إضافة شيفت"
+            onPress={() => navigation.navigate('AddShifts')}
+          />
+        </View>
+      )}
 
       <View style={styles.card}>
         <MenuItem
           icon="security"
-          text="Change Password"
+          text="تغيير كلمة المرور"
           onPress={() => navigation.navigate('ChangePassword')}
         />
         <MenuItem
           icon="event"
-          text="Leave Request"
+          text="طلب إجازة"
           onPress={() => navigation.navigate('LeaveRequest')}
         />
       </View>
@@ -87,17 +88,19 @@ const Settings = ({ navigation }) => {
       <View style={styles.card}>
         <MenuItem
           icon="contact-mail"
-          text="Contact us"
+          text="اتصل بنا"
           onPress={() => navigation.navigate('Contact')}
         />
-        <MenuItem icon="privacy-tip" text="Privacy policy" />
+        <MenuItem icon="privacy-tip" text="سياسة الخصوصية" />
 
         <MenuItem 
-        icon="logout"
-        text="Logout"
-        onPress={() => dispatch(logout())}
+          icon="logout"
+          text="تسجيل الخروج"
+          onPress={async () => {
+            await dispatch(checkOutUser(user.id));
+            dispatch(logout());
+          }}
         />
-
       </View>
     </ScrollView>
   );
@@ -160,7 +163,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   menuItem: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse', 
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomColor: '#eee',
@@ -168,14 +171,15 @@ const styles = StyleSheet.create({
   },
   menuText: {
     flex: 1,
-    marginLeft: 10,
+    marginRight: 10, 
     fontSize: 16,
     color: '#333',
+    textAlign: 'right',
   },
   menuStatus: {
     fontSize: 16,
     color: '#007AFF',
-    marginRight: 5,
+    marginLeft: 5, 
   },
 });
 

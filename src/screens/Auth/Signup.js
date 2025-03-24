@@ -1,4 +1,3 @@
-// Signup.js
 import React, { useState } from 'react';
 import {
   Text,
@@ -21,7 +20,7 @@ import Toast from "react-native-toast-message";
 
 const Signup = ({ navigation }) => {
   const [selectedCompany, setSelectedCompany] = useState('');
-  const companies = ["Company A", "Company B", "Company C"];
+  const companies = ["شركة أ", "شركة ب", "شركة ج"];
   const [gender, setGender] = useState('');
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -38,12 +37,11 @@ const Signup = ({ navigation }) => {
   };
 
   const handleSignup = () => {
-    // Check if all required fields are filled
     if (!name || !email || !phone || !password || !confirmPassword || !selectedCompany || !gender) {
       Toast.show({
         type: "error",
-        text1: "Required Fields",
-        text2: "Please fill in all the required fields",
+        text1: "الحقول المطلوبة",
+        text2: "يرجى ملء جميع الحقول المطلوبة",
       });
       return;
     }
@@ -51,8 +49,8 @@ const Signup = ({ navigation }) => {
     if (password !== confirmPassword) {
       Toast.show({
         type: "error",
-        text1: "Password Mismatch",
-        text2: "Please ensure both passwords match",
+        text1: "عدم تطابق كلمة المرور",
+        text2: "يرجى التأكد من تطابق كلمتي المرور",
       });
       return;
     }
@@ -76,50 +74,49 @@ const Signup = ({ navigation }) => {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <Text style={styles.title}>Create a New Account</Text>
-          
+          <Text style={styles.title}>إنشاء حساب جديد</Text>
 
-          {/* Full Name */}
+          {/* الاسم الكامل */}
           <TextInput 
             style={styles.input} 
-            placeholder="Full Name"
+            placeholder="الاسم الكامل"
             value={name}
             onChangeText={setName}
           />
 
-          {/* Email Address */}
+          {/* البريد الإلكتروني */}
           <TextInput 
             style={styles.input} 
-            placeholder="Email Address"
+            placeholder="البريد الإلكتروني"
             keyboardType="email-address"
             value={email}
             onChangeText={setEmail}
           />
 
-          {/* Phone Number */}
+          {/* رقم الهاتف */}
           <TextInput 
             style={styles.input} 
-            placeholder="Phone Number"
+            placeholder="رقم الهاتف"
             keyboardType="phone-pad"
             value={phone}
             onChangeText={setPhone}
           />
 
-          {/* Company Selection */}
+          {/* اختيار الشركة */}
           <TouchableOpacity
             style={styles.inputContainer}
             onPress={() => setIsModalVisible(true)}>
             <Text style={[styles.inputText, !selectedCompany && styles.placeholder]}>
-              {selectedCompany || 'Choose Company'}
+              {selectedCompany || 'اختر الشركة'}
             </Text>
             <Icon name="arrow-drop-down" size={24} color="#666" />
           </TouchableOpacity>
 
-          {/* Company Modal */}
+          {/* نافذة اختيار الشركة */}
           <Modal visible={isModalVisible} transparent animationType="slide">
             <View style={styles.modalOverlay}>
               <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Select a Company</Text>
+                <Text style={styles.modalTitle}>اختر الشركة</Text>
                 <FlatList
                   data={companies}
                   keyExtractor={(item) => item}
@@ -134,15 +131,15 @@ const Signup = ({ navigation }) => {
                 <TouchableOpacity
                   style={styles.modalClose}
                   onPress={() => setIsModalVisible(false)}>
-                  <Text style={styles.modalCloseText}>Close</Text>
+                  <Text style={styles.modalCloseText}>إغلاق</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </Modal>
 
-          {/* Gender Selection */}
+          {/* اختيار النوع */}
           <View style={styles.genderContainer}>
-            <Text style={styles.label}>Gender:</Text>
+            <Text style={styles.label}>النوع:</Text>
             <View style={styles.genderOptions}>
               <TouchableOpacity
                 style={[styles.genderButton, gender === 'male' && styles.selectedGender]}
@@ -150,7 +147,7 @@ const Signup = ({ navigation }) => {
                 <View style={[styles.radio, gender === 'male' && styles.radioSelected]}>
                   {gender === 'male' && <View style={styles.radioInner} />}
                 </View>
-                <Text style={styles.genderText}>Male</Text>
+                <Text style={styles.genderText}>ذكر</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -159,40 +156,40 @@ const Signup = ({ navigation }) => {
                 <View style={[styles.radio, gender === 'female' && styles.radioSelected]}>
                   {gender === 'female' && <View style={styles.radioInner} />}
                 </View>
-                <Text style={styles.genderText}>Female</Text>
+                <Text style={styles.genderText}>أنثى</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          {/* Password */}
+          {/* كلمة المرور */}
           <TextInput 
             style={styles.input} 
-            placeholder="Password"
+            placeholder="كلمة المرور"
             secureTextEntry
             value={password}
             onChangeText={setPassword}
           />
 
-          {/* Confirm Password */}
+          {/* تأكيد كلمة المرور */}
           <TextInput 
             style={styles.input} 
-            placeholder="Confirm Password"
+            placeholder="تأكيد كلمة المرور"
             secureTextEntry
             value={confirmPassword}
             onChangeText={setConfirmPassword}
           />
 
-          {/* Sign Up Button */}
+          {/* زر التسجيل */}
           <TouchableOpacity style={styles.signupButton} onPress={handleSignup}>
-            <Text style={styles.signupText}>Sign Up</Text>
+            <Text style={styles.signupText}>إنشاء حساب</Text>
           </TouchableOpacity>
 
-          {/* Login Link */}
+          {/* رابط تسجيل الدخول */}
           <TouchableOpacity 
             style={styles.loginLink}
             onPress={() => navigation.navigate('Login')}>
             <Text style={styles.loginText}>
-              Already have an account? <Text style={styles.loginHighlight}>Login</Text>
+              لديك حساب بالفعل؟ <Text style={styles.loginHighlight}>سجل الدخول</Text>
             </Text>
           </TouchableOpacity>
         </ScrollView>
@@ -243,6 +240,7 @@ const styles = StyleSheet.create({
   },
   genderContainer: {
     marginBottom: 20,
+    
   },
   label: {
     fontSize: 13,

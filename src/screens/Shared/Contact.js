@@ -8,41 +8,45 @@ const Contact = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Contact Us</Text>
+      <Text style={styles.header}>اتصل بنا</Text>
 
       {/* حقل إدخال الاسم */}
       <TextInput
         style={styles.input}
-        placeholder="Your Name"
+        placeholder="اسمك"
         placeholderTextColor="#999"
         value={name}
         onChangeText={setName}
+        textAlign="right" 
       />
 
       {/* حقل إدخال البريد الإلكتروني */}
       <TextInput
         style={styles.input}
-        placeholder="Your Email"
+        placeholder="بريدك الإلكتروني"
         placeholderTextColor="#999"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
+        textAlign="right"
       />
 
       {/* حقل إدخال الرسالة */}
       <TextInput
         style={[styles.input, styles.textArea]}
-        placeholder="Your Message"
+        placeholder="رسالتك"
         placeholderTextColor="#999"
         multiline
         numberOfLines={4}
         value={message}
         onChangeText={setMessage}
+        textAlign="right"
+        textAlignVertical="top"
       />
 
       {/* زر الإرسال */}
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Send Message</Text>
+        <Text style={styles.buttonText}>إرسال الرسالة</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -61,6 +65,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#1A1A1A',
+    textAlign: 'right', 
+    width: '100%',
+    fontFamily: 'Cairo', 
   },
   input: {
     width: '100%',
@@ -70,10 +77,12 @@ const styles = StyleSheet.create({
     padding: 15,
     fontSize: 16,
     marginBottom: 15,
+    textAlign: 'right',
+    fontFamily: 'Cairo', 
   },
   textArea: {
     height: 100,
-    textAlignVertical: 'top', 
+    textAlignVertical: 'top',
   },
   button: {
     width: '100%',
@@ -87,6 +96,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+    fontFamily: 'Cairo', 
   },
 });
 

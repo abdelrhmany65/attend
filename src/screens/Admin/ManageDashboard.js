@@ -1,30 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Header from '../../components/Header';
 import DateSelector from '../../components/DateSelector';
 import CheckInButton from '../../components/CheckInButton';
 import BottomNav from '../../components/BottomNav';
 
-// دالة لحساب الأيام ابتداءً من اليوم ولمدة 7 أيام
 const getDaysFromToday = () => {
   const today = new Date();
   let days = [];
   for (let i = 0; i < 7; i++) {
     const day = new Date();
     day.setDate(today.getDate() + i);
-    const dayName = day.toLocaleString('en-US', { weekday: 'short' });
+    const dayName = day.toLocaleString('ar-SA', { weekday: 'short' });
     const dateNumber = day.getDate();
     days.push({
       day: dayName,
       date: dateNumber.toString(),
-      selected: i === 0, // اليوم الأول (اليوم الحالي) يكون مختاراً افتراضياً
+      selected: i === 0,
     });
   }
   return days;
 };
 
-const ManageDashboard = ({navigation}) => {
+const ManageDashboard = ({ navigation }) => {
   const [days, setDays] = useState([]);
 
   useEffect(() => {
@@ -34,22 +32,22 @@ const ManageDashboard = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* Header Section */}
+      {/* الهيدر */}
       <Header navigation={navigation} />
-      
-      {/* Date Selector Section */}
+
+      {/* محدد التاريخ */}
       <DateSelector days={days} />
 
-      {/* Check-in Button */}
+      {/* زر البصمة */}
       <CheckInButton />
 
-      {/* Cards Section */}
+      {/* بطاقات الإحصائيات */}
       <View style={styles.cardContainer}>
-        {/* الكارد الأول */}
+        {/* البطاقة الأولى */}
         <View style={styles.card}>
           <View style={styles.cardLeft}>
             <Text style={styles.cardTitle}>50</Text>
-            <Text style={styles.cardSubtitle}>Total shifts scheduled today</Text>
+            <Text style={styles.cardSubtitle}>إجمالي الورديات المجدولة اليوم</Text>
             <View style={styles.avatarGroup}>
               <Image
                 source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
@@ -65,17 +63,19 @@ const ManageDashboard = ({navigation}) => {
               />
             </View>
           </View>
-          {/* زر في الكارد الأول */}
-          <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('MainList')}>
-            <Text style={styles.cardButtonText}>Details</Text>
+          <TouchableOpacity 
+            style={styles.cardButton} 
+            onPress={() => navigation.navigate('MainList')}
+          >
+            <Text style={styles.cardButtonText}>التفاصيل</Text>
           </TouchableOpacity>
         </View>
 
-        {/* الكارد الثاني */}
+        {/* البطاقة الثانية */}
         <View style={[styles.card, { backgroundColor: '#FEE2E2' }]}>
           <View style={styles.cardLeft}>
             <Text style={styles.cardTitle}>60</Text>
-            <Text style={styles.cardSubtitle}>Number of employees present</Text>
+            <Text style={styles.cardSubtitle}>عدد الموظفين الحاضرين</Text>
             <View style={styles.avatarGroup}>
               <Image
                 source={{ uri: 'https://randomuser.me/api/portraits/women/4.jpg' }}
@@ -91,14 +91,16 @@ const ManageDashboard = ({navigation}) => {
               />
             </View>
           </View>
-          {/* زر في الكارد الثاني */}
-          <TouchableOpacity style={styles.cardButton} onPress={() => navigation.navigate('MainList')}>
-            <Text style={styles.cardButtonText}>Details</Text>
+          <TouchableOpacity 
+            style={styles.cardButton} 
+            onPress={() => navigation.navigate('MainList')}
+          >
+            <Text style={styles.cardButtonText}>التفاصيل</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Bottom Navigation */}
+      {/* القائمة السفلية */}
       <BottomNav 
         navigation={navigation}
         activeTab="Home" 
@@ -114,22 +116,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 40,
   },
-
-  /* الهيدر */
   header: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
   },
   userInfo: {},
-  greeting: { fontSize: 18, color: '#666' },
-  username: { fontSize: 24, fontWeight: '600' },
+  greeting: { 
+    fontSize: 18, 
+    color: '#666',
+    textAlign: 'right' 
+  },
+  username: { 
+    fontSize: 24, 
+    fontWeight: '600',
+    textAlign: 'right' 
+  },
   profilePic: { width: 56, height: 56, borderRadius: 28 },
 
-  /* اختيار التاريخ */
   dateContainer: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     marginBottom: 30,
     paddingHorizontal: 8,
@@ -144,12 +151,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 4,
   },
-  dayText: { fontSize: 14, color: '#666', fontWeight: '500' },
-  dateNumber: { fontSize: 18, fontWeight: '600', color: '#1A1A1A', marginTop: 4 },
+  dayText: { 
+    fontSize: 14, 
+    color: '#666', 
+    fontWeight: '500',
+    fontFamily: 'Cairo' 
+  },
+  dateNumber: { 
+    fontSize: 18, 
+    fontWeight: '600', 
+    color: '#1A1A1A', 
+    marginTop: 4,
+    fontFamily: 'Cairo' 
+  },
   selectedDayBox: { backgroundColor: '#000000', borderColor: '#000000' },
   selectedDayText: { color: '#FFFFFF' },
 
-  /* زر البصمة */
   checkinButton: {
     alignSelf: 'center',
     width: 100,
@@ -162,13 +179,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 
-  /* الكروت */
   cardContainer: {
     marginTop: 30,
     paddingHorizontal: 4, 
   },
   card: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     backgroundColor: '#F3F4F6',
     padding: 20,
     borderRadius: 15,
@@ -178,16 +194,30 @@ const styles = StyleSheet.create({
   },
   cardLeft: {
     flex: 1,
-    marginRight: 10, 
+    marginLeft: 10,
   },
-  cardTitle: { fontSize: 24, fontWeight: '700', marginBottom: 5 },
-  cardSubtitle: { fontSize: 14, color: '#666', marginBottom: 10 },
-  avatarGroup: { flexDirection: 'row' },
+  cardTitle: { 
+    fontSize: 24, 
+    fontWeight: '700', 
+    marginBottom: 5,
+    textAlign: 'right',
+    fontFamily: 'Cairo' 
+  },
+  cardSubtitle: { 
+    fontSize: 14, 
+    color: '#666', 
+    marginBottom: 10,
+    textAlign: 'right',
+    fontFamily: 'Cairo' 
+  },
+  avatarGroup: { 
+    flexDirection: 'row-reverse' 
+  },
   avatar: {
     width: 30,
     height: 30,
     borderRadius: 15,
-    marginRight: -8,
+    marginLeft: -8,
     borderWidth: 2,
     borderColor: '#fff',
   },
@@ -197,22 +227,22 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 6,
     paddingHorizontal: 14,
-    alignSelf: 'flex-end', 
+    alignSelf: 'flex-start',
   },
   cardButtonText: {
     color: '#fff',
     fontWeight: '600',
     fontSize: 14,
+    fontFamily: 'Cairo'
   },
 
-  /* البار السفلي */
   bottomNav: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     height: 70,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: '#fff',

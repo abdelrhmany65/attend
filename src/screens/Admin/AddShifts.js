@@ -34,8 +34,8 @@ const AddShifts = () => {
     } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Error',
-        text2: 'Failed to load employees',
+        text1: 'خطأ',
+        text2: 'فشل تحميل قائمة الموظفين',
       });
     }
   };
@@ -58,10 +58,10 @@ const AddShifts = () => {
   };
 
   const formatTime = (date) => {
-    return date.toLocaleTimeString('en-US', {
+    return date.toLocaleTimeString('ar-EG', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false
+      hour12: true
     }).replace(' ', '');
   };
 
@@ -69,8 +69,8 @@ const AddShifts = () => {
     if (!selectedEmployee) {
       Toast.show({
         type: 'error',
-        text1: 'Missing Information',
-        text2: 'Please select an employee',
+        text1: 'بيانات ناقصة',
+        text2: 'يرجى اختيار موظف',
       });
       return;
     }
@@ -79,7 +79,7 @@ const AddShifts = () => {
       date: shiftDate.toISOString().split('T')[0],
       start: formatTime(shiftStart),
       end: formatTime(shiftEnd),
-      status: 'Scheduled'
+      status: 'مجدولة'
     };
 
     try {
@@ -93,31 +93,31 @@ const AddShifts = () => {
 
       Toast.show({
         type: 'success',
-        text1: 'Shift Added',
-        text2: `Shift for ${employee.name} added successfully`,
+        text1: 'تمت الإضافة',
+        text2: `تمت إضافة وردية لـ ${employee.name} بنجاح`,
       });
 
       navigation.navigate('MainList');
     } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Error',
-        text2: 'Failed to add shift',
+        text1: 'خطأ',
+        text2: 'فشل إضافة الوردية',
       });
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>ADD Shifts</Text>
+      <Text style={styles.header}>إضافة ورديات</Text>
 
-      {/* Employee Selection */}
+      {/* اختيار الموظف */}
       <View style={styles.inputContainer}>
         <Picker
           selectedValue={selectedEmployee}
           onValueChange={setSelectedEmployee}
         >
-          <Picker.Item label="Select Employee" value="" />
+          <Picker.Item label="اختر موظف" value="" />
           {employees.map(employee => (
             <Picker.Item 
               key={employee.id} 
@@ -128,18 +128,18 @@ const AddShifts = () => {
         </Picker>
       </View>
 
-      {/* Date Picker */}
+      {/* اختيار التاريخ */}
       <TouchableOpacity 
         style={styles.dateInput}
         onPress={() => setShowPicker('date')}
       >
         <Text style={styles.dateText}>
-          {shiftDate.toLocaleDateString()}
+          {shiftDate.toLocaleDateString('ar-EG')}
         </Text>
         <Icon name="calendar-today" size={20} color="#666" />
       </TouchableOpacity>
 
-      {/* Start Time Picker */}
+      {/* وقت البداية */}
       <TouchableOpacity 
         style={styles.dateInput}
         onPress={() => setShowPicker('start')}
@@ -150,7 +150,7 @@ const AddShifts = () => {
         <Icon name="access-time" size={20} color="#666" />
       </TouchableOpacity>
 
-      {/* End Time Picker */}
+      {/* وقت النهاية */}
       <TouchableOpacity 
         style={styles.dateInput}
         onPress={() => setShowPicker('end')}
@@ -161,7 +161,7 @@ const AddShifts = () => {
         <Icon name="access-time" size={20} color="#666" />
       </TouchableOpacity>
 
-      {/* DateTimePicker Modal */}
+      {/* منتقي التاريخ والوقت */}
       {showPicker && (
         <DateTimePicker
           value={
@@ -179,7 +179,7 @@ const AddShifts = () => {
         style={styles.button}
         onPress={handleSubmit}
       >
-        <Text style={styles.buttonText}>Schedule Shift</Text>
+        <Text style={styles.buttonText}>حفظ الوردية</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -198,7 +198,8 @@ const styles = StyleSheet.create({
    fontWeight: 'bold',
    textAlign: 'center',
    marginBottom: 20,
-   color: '#1a1a1a'
+   color: '#1a1a1a',
+   fontFamily: 'Cairo'
  },
  inputContainer: {
    borderWidth: 1,
@@ -208,10 +209,12 @@ const styles = StyleSheet.create({
  },
  picker: {
    height: 50,
-   color: '#333'
+   color: '#333',
+   textAlign: 'right',
+   fontFamily: 'Cairo'
  },
  dateContainer: {
-   flexDirection: 'row',
+   flexDirection: 'row-reverse',
    justifyContent: 'space-between',
    marginBottom: 20,
    gap: 10
@@ -222,13 +225,14 @@ const styles = StyleSheet.create({
    borderColor: '#ddd',
    borderRadius: 8,
    padding: 12,
-   flexDirection: 'row',
+   flexDirection: 'row-reverse',
    justifyContent: 'space-between',
    alignItems: 'center'
  },
  dateText: {
    color: '#666',
-   fontSize: 16
+   fontSize: 16,
+   fontFamily: 'Cairo'
  },
  input: {
    borderWidth: 1,
@@ -237,7 +241,8 @@ const styles = StyleSheet.create({
    padding: 12,
    marginBottom: 20,
    fontSize: 16,
-   color: '#333'
+   color: '#333',
+   textAlign: 'right'
  },
  textArea: {
    height: 100,
@@ -252,9 +257,9 @@ const styles = StyleSheet.create({
  buttonText: {
    color: '#fff',
    fontSize: 16,
-   fontWeight: '600'
+   fontWeight: '600',
+   fontFamily: 'Cairo'
  }
 });
 
-
-export default AddShifts
+export default AddShifts;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 const VerificationCode = () => {
-  const [code, setCode] = useState(['', '', '', '', '']); // الحقول الفردية للكود
+  const [code, setCode] = useState(['', '', '', '', '']); 
 
   const handleCodeChange = (text, index) => {
     const newCode = [...code];
@@ -12,8 +12,8 @@ const VerificationCode = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Enter the Verification Code</Text>
-      <Text style={styles.subtitle}>We have sent a code to +800000000</Text>
+      <Text style={styles.title}>أدخل رمز التحقق</Text>
+      <Text style={styles.subtitle}>لقد أرسلنا رمزًا إلى الرقم +800000000</Text>
       
       <View style={styles.codeContainer}>
         {code.map((item, index) => (
@@ -28,11 +28,11 @@ const VerificationCode = () => {
       </View>
 
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Continue</Text>
+        <Text style={styles.buttonText}>متابعة</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.resendButton}>
-        <Text style={styles.resendText}>Resend Code</Text>
+        <Text style={styles.resendText}>إعادة إرسال الرمز</Text>
       </TouchableOpacity>
     </View>
   );

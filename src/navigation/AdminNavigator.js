@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // Admin Screens
 import ManageDashboard from "../screens/Admin/ManageDashboard";
 import MainList from "../screens/Admin/MainList";
+import EmployeeDetailsScreen from "../screens/Admin/EmployeeDetailsScreen";
 import AddShifts from "../screens/Admin/AddShifts";
 import EditShifts from "../screens/Admin/EditShifts";
 import AddUsers from "../screens/Admin/AddUsers";
@@ -28,6 +29,7 @@ const AdminNavigator = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="ManageDashboard" component={ManageDashboard} />
       <Stack.Screen name="MainList" component={MainList} />
+      <Stack.Screen name="EmployeeDetailsScreen" component={EmployeeDetailsScreen} />
       <Stack.Screen name="AddShifts" component={AddShifts} />
       <Stack.Screen name="EditShifts" component={EditShifts} />
       <Stack.Screen name="AddUsers" component={AddUsers} />

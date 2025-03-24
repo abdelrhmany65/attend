@@ -1,113 +1,121 @@
 import React from 'react';
-import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import StatusBadge from './StatusBadge';
-import ActionButton from './ActionButton';
 
-const EmployeeTable = ({ data, onEdit, onShift, onDelete }) => (
-  <ScrollView
-    horizontal
-    showsHorizontalScrollIndicator={false}
-    contentContainerStyle={styles.container}
-  >
-    <View>
-      {/* Table Header */}
+const EmployeeTable = ({ data, onEdit, onShift, onDelete }) => {
+  const navigation = useNavigation();
+
+  const handleDelete = (id) => {
+    Alert.alert(
+      "تأكيد الحذف",
+      "هل أنت متأكد من رغبتك في حذف هذا الموظف؟",
+      [
+        { text: "إلغاء", style: "cancel" },
+        { text: "حذف", onPress: () => onDelete(id), style: "destructive" }
+      ]
+    );
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* رأس الجدول */}
       <View style={styles.header}>
-        <Text style={[styles.headerCell, { width: 160 }]}>Employee Name</Text>
-        <Text style={[styles.headerCell, { width: 120 }]}>Department</Text>
-        <Text style={[styles.headerCell, { width: 120 }]}>Shift Start</Text>
-        <Text style={[styles.headerCell, { width: 120 }]}>Shift End</Text>
-        <Text style={[styles.headerCell, { width: 100 }]}>Status</Text>
-        <Text style={[styles.headerCell, { width: 150 }]}>Actions</Text>
+        <Text style={[styles.headerCell, styles.nameHeader]}>الاسم</Text>
+        <Text style={styles.headerCell}>بداية الشيفت</Text>
+        <Text style={styles.headerCell}>نهاية الشيفت</Text>
+        <Text style={styles.headerCell}>الحالة</Text>
       </View>
 
-      {/* Table Rows */}
+      {/* صفوف الجدول */}
       {data.map((employee) => (
-      <View key={employee.id} style={styles.row}>
-        {/* Employee Details */}
-        <Text style={[styles.cell, { width: 160 }]}>{employee.name || "N/A"}</Text>
-        <Text style={[styles.cell, { width: 120 }]}>{employee.department || "N/A"}</Text>
+        <View key={employee.id} style={styles.row}>
+          {/* اسم الموظف */}
+          <TouchableOpacity
+            style={styles.nameCell}
+            onPress={() => navigation.navigate('EmployeeDetailsScreen', { employeeId: employee.id })}
+          >
+            <Text style={styles.cellText} numberOfLines={1}>{employee.name || "غير متوفر"}</Text>
+          </TouchableOpacity>
 
-        {/* Last Shift */}
-        {employee.shifts && employee.shifts.length > 0 ? (
-          (() => {
-            const lastShift = employee.shifts[employee.shifts.length - 1]; // جلب آخر شيفت
-            return (
-              <View style={styles.shiftRow}>
-                <Text style={[styles.cell, { width: 120 }]}>{lastShift.start || "N/A"}</Text>
-                <Text style={[styles.cell, { width: 120 }]}>{lastShift.end || "N/A"}</Text>
-                <View style={[styles.statusCell, { width: 100 }]}>
-                  <StatusBadge status={lastShift.status || "Unknown"} />
-                </View>
+          {/* بيانات الشيفت */}
+          {employee.shifts?.length > 0 ? (
+            <>
+              <Text style={styles.cell}>{employee.shifts[0].start || "غير متوفر"}</Text>
+              <Text style={styles.cell}>{employee.shifts[0].end || "غير متوفر"}</Text>
+              <View style={styles.statusCell}>
+                <StatusBadge status={employee.shifts[0].status || "غير معروف"} />
               </View>
-            );
-          })()
-        ) : (
-          // Default values if no shifts are provided
-          <View style={styles.shiftRow}>
-            <Text style={[styles.cell, { width: 120 }]}>N/A</Text>
-            <Text style={[styles.cell, { width: 120 }]}>N/A</Text>
-            <View style={[styles.statusCell, { width: 100 }]}>
-              <StatusBadge status="Unknown" />
-            </View>
-          </View>
-        )}
-
-        {/* Actions */}
-        <View style={[styles.actions, { width: 150 }]}>
-          <ActionButton icon="edit" color="#4CAF50" onPress={() => onEdit(employee.id)} />
-          <ActionButton icon="access-time" color="#2196F3" onPress={() => onShift(employee.id)} />
-          <ActionButton icon="delete" color="#F44336" onPress={() => onDelete(employee.id)} />
+            </>
+          ) : (
+            <>
+              <Text style={styles.cell}>غير متوفر</Text>
+              <Text style={styles.cell}>غير متوفر</Text>
+              <View style={styles.statusCell}>
+                <StatusBadge status="غير معروف" />
+              </View>
+            </>
+          )}
         </View>
-      </View>
       ))}
-
     </View>
-  </ScrollView>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: 'center',
+    flex: 1,
+    paddingHorizontal: 8,
   },
   header: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse', 
     backgroundColor: '#F8F9FA',
     paddingVertical: 14,
     borderBottomWidth: 2,
     borderBottomColor: '#E9ECEF',
   },
   headerCell: {
+    flex: 1,
     fontSize: 12,
     fontWeight: '600',
     color: '#6C757D',
-    paddingHorizontal: 8,
+    textAlign: 'center',
+    paddingHorizontal: 4,
+    fontFamily: 'Cairo', 
+  },
+  nameHeader: {
+    flex: 1,
+    textAlign: 'right', 
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: 'row-reverse', 
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#F1F3F5',
   },
-  shiftRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  nameCell: {
+    flex: 1,
+    paddingHorizontal: 4,
   },
   cell: {
+    flex: 1,
     fontSize: 14,
     color: '#495057',
-    paddingHorizontal: 8,
+    paddingHorizontal: 4,
+    textAlign: 'center',
+    fontFamily: 'Cairo',
+  },
+  cellText: {
+    fontSize: 14,
+    color: '#495057',
+    textAlign: 'right',
+    fontFamily: 'Cairo',
   },
   statusCell: {
-    justifyContent: 'center',
+    flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 8,
-  },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingHorizontal: 8,
+    paddingHorizontal: 4,
   },
 });
 

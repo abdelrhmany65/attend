@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://192.168.1.9:3003";
+const API_BASE_URL = "http://192.168.1.8:3003";
 
 // Fetch all employees
 export const getEmployees = async () => {
@@ -23,6 +23,18 @@ export const addEmployee = async (employeeData) => {
     throw error;
   }
 };
+
+// Update an employee's data (for regular users)
+export const updateUser = async (id, updatedData) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/users/${id}`, updatedData);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
+  }
+};
+
 
 // Delete an employee
 export const deleteEmployee = async (id) => {
@@ -74,4 +86,5 @@ export const changePassword = async (id, currentPassword, newPassword) => {
     console.error("Error changing password:", error);
     throw error;
   }
+
 };

@@ -34,27 +34,27 @@ const Login = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Hi, Welcome Back! 👋</Text>
+        <Text style={styles.title}>مرحباً، أهلاً بعودتك! 👋</Text>
 
-        {/* Email Field */}
+        {/* حقل البريد الإلكتروني */}
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="البريد الإلكتروني"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
         />
 
-        {/* Password Field */}
+        {/* حقل كلمة المرور */}
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="كلمة المرور"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
         />
 
-        {/* Remember Me and Forgot Password */}
+        {/* تذكرني واستعادة كلمة المرور */}
         <View style={styles.optionsContainer}>
           <TouchableOpacity
             style={styles.rememberMeContainer}
@@ -63,26 +63,26 @@ const Login = ({ navigation }) => {
             <View style={[styles.checkbox, rememberMe && styles.checked]}>
               {rememberMe && <Text style={styles.checkmark}>✓</Text>}
             </View>
-            <Text style={styles.rememberText}>Remember Me</Text>
+            <Text style={styles.rememberText}>تذكرني</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
-            <Text style={styles.optionText}>Forgot Password?</Text>
+            <Text style={styles.optionText}>هل نسيت كلمة المرور؟</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Login Button */}
+        {/* زر تسجيل الدخول */}
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>تسجيل الدخول</Text>
         </TouchableOpacity>
 
-        {/* Sign Up Link */}
+        {/* رابط إنشاء حساب جديد */}
         <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
-          <Text style={styles.signUpText}>Don’t have an account? Sign Up</Text>
+          <Text style={styles.signUpText}>ليس لديك حساب؟ قم بإنشاء حساب</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Toast Message Component */}
+      {/* مكون الرسائل التوضيحية */}
       <Toast />
     </View>
   );

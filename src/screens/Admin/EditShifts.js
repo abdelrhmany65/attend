@@ -42,16 +42,16 @@ const EditShifts = () => {
           } else {
             Toast.show({
               type: 'error',
-              text1: 'Error',
-              text2: 'Shift not found',
+              text1: 'خطأ',
+              text2: 'الوردية غير موجودة',
             });
           }
         }
       } catch (error) {
         Toast.show({
           type: 'error',
-          text1: 'Error',
-          text2: 'Failed to load shift data',
+          text1: 'خطأ',
+          text2: 'فشل تحميل بيانات الوردية',
         });
       } finally {
         setLoading(false);
@@ -71,10 +71,10 @@ const EditShifts = () => {
   };
 
   const formatTime = (date) => {
-    return date.toLocaleTimeString('en-US', {
+    return date.toLocaleTimeString('ar-EG', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false
+      hour12: true
     }).trim();
   };
 
@@ -86,7 +86,7 @@ const EditShifts = () => {
       date: shiftDate.toISOString().split('T')[0],
       start: formatTime(shiftStart),
       end: formatTime(shiftEnd),
-      status: 'Scheduled'
+      status: 'مجدولة'
     };
 
     try {
@@ -98,16 +98,16 @@ const EditShifts = () => {
 
       Toast.show({
         type: 'success',
-        text1: 'Shift Updated',
-        text2: 'Shift updated successfully!',
+        text1: 'تم التحديث',
+        text2: 'تم تحديث الوردية بنجاح!',
       });
 
       navigation.goBack();
     } catch (error) {
       Toast.show({
         type: 'error',
-        text1: 'Error',
-        text2: 'Failed to update shift',
+        text1: 'خطأ',
+        text2: 'فشل تحديث الوردية',
       });
     }
   };
@@ -118,13 +118,15 @@ const EditShifts = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Edit Shift for {employee?.name}</Text>
+      <Text style={styles.header}>تعديل وردية لـ {employee?.name}</Text>
 
       <TouchableOpacity
         style={styles.dateInput}
         onPress={() => setShowPicker('date')}
       >
-        <Text style={styles.dateText}>{shiftDate.toDateString()}</Text>
+        <Text style={styles.dateText}>
+          {shiftDate.toLocaleDateString('ar-EG')}
+        </Text>
         <Icon name="calendar-today" size={20} color="#666" />
       </TouchableOpacity>
       {showPicker === 'date' && (
@@ -169,7 +171,7 @@ const EditShifts = () => {
       )}
 
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Save Changes</Text>
+        <Text style={styles.buttonText}>حفظ التغييرات</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -178,6 +180,7 @@ const EditShifts = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    justifyContent: 'center',
     padding: 20,
     backgroundColor: '#fff',
   },
@@ -187,13 +190,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
     color: '#1a1a1a',
+    fontFamily: 'Cairo',
   },
   dateInput: {
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 8,
     padding: 12,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 10,
@@ -201,6 +205,7 @@ const styles = StyleSheet.create({
   dateText: {
     color: '#666',
     fontSize: 16,
+    fontFamily: 'Cairo',
   },
   button: {
     backgroundColor: '#007AFF',
@@ -213,6 +218,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+    fontFamily: 'Cairo',
   },
 });
 

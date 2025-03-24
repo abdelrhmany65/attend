@@ -19,10 +19,10 @@ import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Toast from "react-native-toast-message";
 
-
 const AddUsers = () => {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [gender, setGender] = useState("");
+  const [role, setRole] = useState("user");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,8 +31,8 @@ const AddUsers = () => {
   const [phone, setPhone] = useState("");
   const [profilePic, setProfilePic] = useState(null);
 
-  const companies = ["Company A", "Company B", "Company C"];
-  const genders = ["male", "female"];
+  const companies = ["الشركة أ", "الشركة ب", "الشركة ج"];
+  const genders = ["ذكر", "أنثى"];
 
   const navigation = useNavigation();
 
@@ -41,11 +41,10 @@ const AddUsers = () => {
     setIsModalVisible(false);
   };
 
-  // image 
   const pickImage = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
-      Alert.alert("Permission required", "You need to allow access to photos.");
+      Alert.alert("مطلوب إذن", "يجب السماح بالوصول إلى الصور");
       return;
     }
 
@@ -60,8 +59,8 @@ const AddUsers = () => {
       setProfilePic(result.assets[0].uri);
       Toast.show({
         type: "success",
-        text1: "Profile Updated",
-        text2: "Profile picture updated successfully.",
+        text1: "تم التحديث",
+        text2: "تم تحديث صورة الملف الشخصي بنجاح",
       });
     }
   };
@@ -70,8 +69,8 @@ const AddUsers = () => {
     if (!name || !email || !phone || !password || !confirmPassword || !selectedCompany || !gender) {
       Toast.show({
         type: "error",
-        text1: "Missing Information",
-        text2: "Please fill out all fields.",
+        text1: "معلومات ناقصة",
+        text2: "يرجى ملء جميع الحقول",
       });
       return;
     }
@@ -79,8 +78,8 @@ const AddUsers = () => {
     if (password !== confirmPassword) {
       Toast.show({
         type: "error",
-        text1: "Password Mismatch",
-        text2: "Passwords do not match.",
+        text1: "عدم تطابق",
+        text2: "كلمات المرور غير متطابقة",
       });
       return;
     }
@@ -92,23 +91,23 @@ const AddUsers = () => {
       password,
       company: selectedCompany,
       gender,
-      profilePic: profilePic || "https://via.placeholder.com/100", 
+      role,
+      profilePic: profilePic || "https://via.placeholder.com/100",
     };
 
     try {
       await addEmployee(newEmployee);
       Toast.show({
         type: "success",
-        text1: "User Added",
-        text2: `${name} has been successfully added.`,
+        text1: "تم الإضافة",
+        text2: `تمت إضافة ${name} بنجاح`,
       });
       navigation.navigate("ManageDashboard");
-
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: "Error",
-        text2: "Failed to add user. Please try again.",
+        text1: "خطأ",
+        text2: "فشل إضافة المستخدم. يرجى المحاولة مرة أخرى",
       });
     }
   };
@@ -116,7 +115,7 @@ const AddUsers = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>ADD Users</Text>
+        <Text style={styles.title}>إضافة مستخدم</Text>
 
         {/* صورة الملف الشخصي */}
         <View style={styles.profileHeader}>
@@ -129,40 +128,40 @@ const AddUsers = () => {
               <Icon name="photo-camera" size={18} color="#fff" />
             </TouchableOpacity>
           </TouchableOpacity>
-          <Text style={styles.profileName}>{name || "User Name"}</Text>
+          <Text style={styles.profileName}>{name || "اسم المستخدم"}</Text>
         </View>
 
         {/* حقول الإدخال */}
         <TextInput 
           style={styles.input} 
-          placeholder="Name" 
+          placeholder="الاسم" 
           placeholderTextColor="#999999" 
           onChangeText={setName} 
         />
         <TextInput 
           style={styles.input} 
-          placeholder="Email" 
+          placeholder="البريد الإلكتروني" 
           keyboardType="email-address" 
           placeholderTextColor="#999999" 
           onChangeText={setEmail} 
         />
         <TextInput 
           style={styles.input} 
-          placeholder="Phone" 
+          placeholder="الهاتف" 
           keyboardType="phone-pad" 
           placeholderTextColor="#999999" 
           onChangeText={setPhone} 
         />
         <TextInput 
           style={styles.input} 
-          placeholder="Password" 
+          placeholder="كلمة المرور" 
           secureTextEntry 
           placeholderTextColor="#999999" 
           onChangeText={setPassword} 
         />
         <TextInput 
           style={styles.input} 
-          placeholder="Confirm Password" 
+          placeholder="تأكيد كلمة المرور" 
           secureTextEntry 
           placeholderTextColor="#999999" 
           onChangeText={setConfirmPassword} 
@@ -174,7 +173,7 @@ const AddUsers = () => {
           onPress={() => setIsModalVisible(true)}
         >
           <Text style={[styles.inputText, !selectedCompany && styles.placeholder]}>
-            {selectedCompany || "Choose a company"}
+            {selectedCompany || "اختر شركة"}
           </Text>
           <Icon name="arrow-drop-down" size={24} color="#666" />
         </TouchableOpacity>
@@ -183,7 +182,7 @@ const AddUsers = () => {
         <Modal visible={isModalVisible} transparent animationType="slide">
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>Select a Company</Text>
+              <Text style={styles.modalTitle}>اختر شركة</Text>
               <FlatList
                 data={companies}
                 keyExtractor={(item) => item}
@@ -200,7 +199,7 @@ const AddUsers = () => {
                 style={styles.modalClose} 
                 onPress={() => setIsModalVisible(false)}
               >
-                <Text style={styles.modalCloseText}>Close</Text>
+                <Text style={styles.modalCloseText}>إغلاق</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -208,7 +207,7 @@ const AddUsers = () => {
 
         {/* اختيار الجنس */}
         <View style={styles.genderContainer}>
-          <Text style={styles.label}>Select your gender</Text>
+          <Text style={styles.label}>اختر جنسك</Text>
           <View style={styles.genderOptions}>
             {genders.map((g) => (
               <TouchableOpacity
@@ -219,7 +218,26 @@ const AddUsers = () => {
                 <View style={[styles.radio, gender === g && styles.radioSelected]}>
                   {gender === g && <View style={styles.radioInner} />}
                 </View>
-                <Text style={styles.genderText}>{g === "male" ? "Man" : "Woman"}</Text>
+                <Text style={styles.genderText}>{g}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        {/* اختيار الدور */}
+        <View style={styles.genderContainer}>
+          <Text style={styles.label}>اختر الدور</Text>
+          <View style={styles.genderOptions}>
+            {["مدير", "مستخدم"].map((r) => (
+              <TouchableOpacity
+                key={r}
+                style={[styles.genderButton, role === r && styles.selectedGender]}
+                onPress={() => setRole(r)}
+              >
+                <View style={[styles.radio, role === r && styles.radioSelected]}>
+                  {role === r && <View style={styles.radioInner} />}
+                </View>
+                <Text style={styles.genderText}>{r}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -227,7 +245,7 @@ const AddUsers = () => {
 
         {/* زر الحفظ */}
         <TouchableOpacity style={styles.signupButton} onPress={handleSave}>
-          <Text style={styles.signupText}>Save Changes</Text>
+          <Text style={styles.signupText}>حفظ التغييرات</Text>
         </TouchableOpacity>
       </ScrollView>
     </TouchableWithoutFeedback>
@@ -246,6 +264,7 @@ const styles = StyleSheet.create({
     color: "#1A1A1A",
     textAlign: "center",
     marginVertical: 30,
+    fontFamily: 'Cairo',
   },
   profileHeader: {
     alignItems: "center",
@@ -264,7 +283,7 @@ const styles = StyleSheet.create({
   editIcon: {
     position: "absolute",
     bottom: 0,
-    right: 0,
+    left: 0,
     backgroundColor: "#007AFF",
     borderRadius: 12,
     padding: 4,
@@ -274,9 +293,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
     color: "#1A1A1A",
+    fontFamily: 'Cairo',
   },
   inputContainer: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     justifyContent: "space-between",
     borderWidth: 1,
@@ -289,6 +309,7 @@ const styles = StyleSheet.create({
   inputText: {
     fontSize: 16,
     color: "#1A1A1A",
+    fontFamily: 'Cairo',
   },
   placeholder: {
     color: "#999999",
@@ -302,6 +323,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     color: "#1A1A1A",
     height: 50,
+    textAlign: 'right',
+    fontFamily: 'Cairo',
   },
   genderContainer: {
     marginBottom: 20,
@@ -310,13 +333,15 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#666",
     marginBottom: 10,
+    fontFamily: 'Cairo',
+    textAlign: 'right',
   },
   genderOptions: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     gap: 20,
   },
   genderButton: {
-    flexDirection: "row",
+    flexDirection: "row-reverse",
     alignItems: "center",
     gap: 8,
     padding: 10,
@@ -348,6 +373,7 @@ const styles = StyleSheet.create({
   genderText: {
     fontSize: 16,
     color: "#1A1A1A",
+    fontFamily: 'Cairo',
   },
   modalOverlay: {
     flex: 1,
@@ -365,6 +391,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 15,
     color: "#1A1A1A",
+    fontFamily: 'Cairo',
+    textAlign: 'right',
   },
   modalItem: {
     paddingVertical: 15,
@@ -374,15 +402,18 @@ const styles = StyleSheet.create({
   modalItemText: {
     fontSize: 16,
     color: "#1A1A1A",
+    fontFamily: 'Cairo',
+    textAlign: 'right',
   },
   modalClose: {
     marginTop: 15,
-    alignSelf: "flex-end",
+    alignSelf: "flex-start",
   },
   modalCloseText: {
     color: "#007AFF",
     fontSize: 16,
     fontWeight: "500",
+    fontFamily: 'Cairo',
   },
   signupButton: {
     backgroundColor: "#007AFF",
@@ -395,6 +426,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     fontWeight: "600",
+    fontFamily: 'Cairo',
   },
 });
 

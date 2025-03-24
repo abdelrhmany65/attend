@@ -9,10 +9,7 @@ const Header = () => {
 
   return (
     <View style={styles.header}>
-      <View style={styles.userInfo}>
-        <Text style={styles.greeting}>Hello,</Text>
-        <Text style={styles.username}>{user ? user.name : "Guest"}</Text> 
-      </View>
+
       <TouchableOpacity onPress={() => navigation.navigate("UserProfile", { id: user?.id })}>
         <Image
             source={
@@ -24,6 +21,11 @@ const Header = () => {
         />
 
       </TouchableOpacity>
+
+      <View style={styles.userInfo}>
+        <Text style={styles.greeting}>مرحباً</Text>
+        <Text style={styles.username}>{user ? user.name : "Guest"}</Text> 
+      </View>
     </View>
   );
 };

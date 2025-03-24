@@ -8,141 +8,154 @@ import {
   ScrollView,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import DatePicker from 'react-native-date-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const LeaveRequest = () => {
-  // States
+
   const [leaveType, setLeaveType] = useState('');
-  const [fromDate, setFromDate] = useState(new Date()); 
-  const [toDate, setToDate] = useState(new Date()); 
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(new Date());
   const [name, setName] = useState('');
   const [employeeName, setEmployeeName] = useState('');
   const [phone, setPhone] = useState('');
   const [reason, setReason] = useState('');
   
-  // Date Picker Controls
-  const [openFromDate, setOpenFromDate] = useState(false);
-  const [openToDate, setOpenToDate] = useState(false);
+  // تحكم بانتقاء التواريخ
+  const [showFromDate, setShowFromDate] = useState(false);
+  const [showToDate, setShowToDate] = useState(false);
 
-  // Format Date for Display
+  // تنسيق التاريخ للعرض
   const formatDate = (date) => {
-    return date.toLocaleDateString('en-GB', {
+    return date.toLocaleDateString('ar-SA', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
     });
   };
 
+  const handleDateChange = (event, selectedDate, type) => {
+    const currentDate = selectedDate || (type === 'from' ? fromDate : toDate);
+    
+    if (type === 'from') {
+      setShowFromDate(false);
+      setFromDate(currentDate);
+      if (currentDate > toDate) setToDate(currentDate);
+    } else {
+      setShowToDate(false);
+      setToDate(currentDate);
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Leave Request</Text>
+      <Text style={styles.header}>طلب إجازة</Text>
 
-      {/* Leave Type Picker */}
+      {/* اختيار نوع الإجازة */}
       <View style={styles.inputContainer}>
         <Picker
           selectedValue={leaveType}
           style={styles.picker}
           onValueChange={setLeaveType}
         >
-          <Picker.Item label="Select leave type" value="" />
-          <Picker.Item label="Annual Leave" value="annual" />
-          <Picker.Item label="Sick Leave" value="sick" />
-          <Picker.Item label="Casual Leave" value="casual" />
+          <Picker.Item label="اختر نوع الإجازة" value="" />
+          <Picker.Item label="إجازة سنوية" value="annual" />
+          <Picker.Item label="إجازة مرضية" value="sick" />
+          <Picker.Item label="إجازة عارضة" value="casual" />
         </Picker>
       </View>
 
-      {/* Date Selection */}
+      {/* اختيار التواريخ */}
       <View style={styles.dateContainer}>
-        {/* From Date */}
+        {/* من تاريخ */}
         <TouchableOpacity 
           style={styles.dateInput} 
-          // onPress={() => setOpenFromDate(true)}
+          onPress={() => setShowFromDate(true)}
         >
           <Text style={styles.dateText}>
             {formatDate(fromDate)}
           </Text>
           <Icon name="calendar-today" size={20} color="#666" />
           
-          <DatePicker
-            modal
-            open={openFromDate}
-            date={fromDate}
-            mode="date"
-            // onConfirm={(date) => {
-            //   setOpenFromDate(false);
-            //   setFromDate(date);
-            // }}
-            // onCancel={() => setOpenFromDate(false)}
-          />
+          {showFromDate && (
+            <DateTimePicker
+              value={fromDate}
+              mode="date"
+              display="default"
+              onChange={(e, d) => handleDateChange(e, d, 'from')}
+              minimumDate={new Date()}
+            />
+          )}
         </TouchableOpacity>
 
-        {/* To Date */}
+        {/* إلى تاريخ */}
         <TouchableOpacity 
           style={styles.dateInput} 
-          // onPress={() => setOpenToDate(true)}
+          onPress={() => setShowToDate(true)}
         >
           <Text style={styles.dateText}>
             {formatDate(toDate)}
           </Text>
           <Icon name="calendar-today" size={20} color="#666" />
           
-          <DatePicker
-            modal
-            open={openToDate}
-            date={toDate}
-            mode="date"
-            minimumDate={fromDate}
-            // onConfirm={(date) => {
-            //   setOpenToDate(false);
-            //   setToDate(date);
-            // }}
-            // onCancel={() => setOpenToDate(false)}
-          />
+          {showToDate && (
+            <DateTimePicker
+              value={toDate}
+              mode="date"
+              display="default"
+              onChange={(e, d) => handleDateChange(e, d, 'to')}
+              minimumDate={fromDate}
+            />
+          )}
         </TouchableOpacity>
       </View>
 
-      {/* Other Input Fields */}
+      {/* الحقول الأخرى */}
       <TextInput
         style={styles.input}
-        placeholder="Name"
+        placeholder="الاسم"
         value={name}
         onChangeText={setName}
+        textAlign="right"
       />
       
       <TextInput
         style={styles.input}
-        placeholder="Employee Name"
+        placeholder="اسم الموظف"
         value={employeeName}
         onChangeText={setEmployeeName} 
+        textAlign="right"
       />
       
       <TextInput
         style={styles.input}
-        placeholder="Applicant's phone Number"
+        placeholder="رقم هاتف مقدم الطلب"
         keyboardType="phone-pad"
         value={phone}
         onChangeText={setPhone}
+        textAlign="right"
       />
       
       <TextInput
         style={[styles.input, styles.textArea]}
-        placeholder="Reason for leave"
+        placeholder="سبب الإجازة"
         multiline
         numberOfLines={4}
         value={reason}
         onChangeText={setReason}
+        textAlign="right"
+        textAlignVertical="top"
       />
 
-      {/* Submit Button */}
+      {/* زر الإرسال */}
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>SEND</Text>
+        <Text style={styles.buttonText}>إرسال</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
 
-
+// الأنماط تبقى كما هي دون تغيير
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -156,7 +169,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
-    color: '#1a1a1a'
+    color: '#1a1a1a',
+    fontFamily: 'Cairo',
   },
   inputContainer: {
     borderWidth: 1,
@@ -166,7 +180,8 @@ const styles = StyleSheet.create({
   },
   picker: {
     height: 50,
-    color: '#333'
+    color: '#333',
+    textAlign: 'right',
   },
   dateContainer: {
     flexDirection: 'row',
@@ -180,13 +195,14 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 8,
     padding: 12,
-    flexDirection: 'row',
+    flexDirection: 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
   dateText: {
     color: '#666',
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'Cairo',
   },
   input: {
     borderWidth: 1,
@@ -195,7 +211,9 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 20,
     fontSize: 16,
-    color: '#333'
+    color: '#333',
+    textAlign: 'right',
+    fontFamily: 'Cairo',
   },
   textArea: {
     height: 100,
@@ -210,7 +228,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600'
+    fontWeight: '600',
+    fontFamily: 'Cairo',
   }
 });
 

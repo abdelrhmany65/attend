@@ -49,19 +49,6 @@ const Dashboard = ({ navigation }) => {
       {/* Date Selector Section */}
       <DateSelector days={days} />
 
-      {/* Attendance Status */}
-      {/* <View style={styles.attendanceHeader}>
-        <Text style={styles.attendanceTitle}>Attendance</Text>
-        <Text style={styles.attendanceSubtitle}>current month</Text>
-      </View> */}
-
-      {/* Statistics Grid */}
-      {/* <View style={styles.statsGrid}>
-        {stats.map((item, index) => (
-          <StatItem key={index} {...item} />
-        ))}
-      </View> */}
-
       {/* Check-in Button */}
       <CheckInButton />
 
